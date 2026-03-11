@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using backend.Repositories;
 using backend.Services;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -45,6 +46,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<BillingService>();
+builder.Services.AddScoped<SubscriptionService>();
+
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+
 
 builder.Services.AddSwaggerGen(options =>
 {
