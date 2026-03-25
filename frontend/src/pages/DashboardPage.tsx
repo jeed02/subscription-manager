@@ -29,30 +29,38 @@ export default function DashboardPage() {
                         logo={
                             "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
                         }
+                        frequency="Monthly"
+                        category="Entertainment"
                     />
                     <SubscriptionCard
-                        name={"Netflix"}
+                        name={"Spotify"}
                         daysLeft={11}
-                        cost={12}
+                        cost={10}
                         logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
+                            "https://www.google.com/s2/favicons?domain=spotify.com&sz=128"
                         }
+                        frequency="Monthly"
+                        category="Music"
                     />
                     <SubscriptionCard
-                        name={"Netflix"}
+                        name={"Notion"}
                         daysLeft={14}
-                        cost={12}
+                        cost={8}
                         logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
+                            "https://www.google.com/s2/favicons?domain=notion.so&sz=128"
                         }
+                        frequency="Monthly"
+                        category="Productivity"
                     />
                     <SubscriptionCard
-                        name={"Netflix"}
+                        name={"Microsoft 365"}
                         daysLeft={20}
-                        cost={12}
+                        cost={6.99}
                         logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
+                            "https://www.google.com/s2/favicons?domain=microsoft.com&sz=128"
                         }
+                        frequency="Monthly"
+                        category="Work"
                     />
                 </div>
             </section>
