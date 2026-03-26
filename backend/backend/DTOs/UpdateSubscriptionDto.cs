@@ -8,4 +8,5 @@ public class UpdateSubscriptionDto
     public decimal Cost { get; set; }
     public DateTime StartDate { get; set; }
     public BillingFrequency Frequency { get; set; }
+    public Guid? CategoryId { get; set; }
 }

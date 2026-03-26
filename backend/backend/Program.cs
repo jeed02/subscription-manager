@@ -48,8 +48,14 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<BillingService>();
 builder.Services.AddScoped<SubscriptionService>();
+builder.Services.AddScoped<UserPreferencesService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<BudgetService>();
 
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
 
 
 builder.Services.AddSwaggerGen(options =>

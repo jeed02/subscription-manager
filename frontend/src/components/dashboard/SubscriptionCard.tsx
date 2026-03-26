@@ -73,11 +73,11 @@ export default function SubscriptionCard({
                 </div>
 
                 <div className="flex flex-row items-center justify-between gap-2 h-1/4 text-main-900">
-                    <div className="rounded-4xl bg-main-100 p-2 border border-main-300 text-center md:text-sm">
+                    <div className="rounded-4xl bg-main-50 p-2 text-center md:text-sm">
                         {daysLeft} days left
                     </div>
 
-                    <div className="rounded-4xl bg-main-100 p-2 border border-main-300 text-center md:text-sm">
+                    <div className="rounded-4xl bg-main-50 p-2 text-center md:text-sm">
                         ${subscription.cost}
                     </div>
                 </div>

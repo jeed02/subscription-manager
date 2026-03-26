@@ -5,5 +5,6 @@ public enum BillingFrequency
     Weekly = 1,
     BiWeekly = 2,
     Monthly = 3,
-    Yearly = 4
+    Quarterly = 4,
+    Yearly = 5
 }

@@ -17,7 +17,13 @@ public class SubscriptionRepository :ISubscriptionRepository
     {
         return await _context.Subscriptions
             .Where(s => s.UserId == userId)
+            .Include(s => s.Category)
             .ToListAsync();
+    }
+
+    public async Task<List<Subscription>> GetByUserIdAsync(Guid userId)
+    {
+        return await GetAllAsync(userId);
     }
 
     public async Task<Subscription?> GetByIdAsync(Guid id)

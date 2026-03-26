@@ -6,6 +6,8 @@ using backend.DTOs;
 using System.Security.Claims;
 using backend.Extensions;
 using backend.Services;
+using backend.Repositories;
+using System.Text;
 
 namespace backend.Controllers;
 
@@ -15,12 +17,13 @@ namespace backend.Controllers;
 public class SubscriptionController : ControllerBase
 {
     private readonly SubscriptionService _subscriptionService;
+    private readonly ISubscriptionRepository _subscriptionRepository;
 
     
-    public SubscriptionController(SubscriptionService subscriptionService)
+    public SubscriptionController(SubscriptionService subscriptionService, ISubscriptionRepository subscriptionRepository)
     {
         _subscriptionService = subscriptionService;
-
+        _subscriptionRepository = subscriptionRepository;
     }
     
     [HttpGet]
@@ -72,6 +75,33 @@ public class SubscriptionController : ControllerBase
         await _subscriptionService.DeleteSubscription(id);
         return NoContent();
     }
-    
 
+    [HttpGet("export/csv")]
+    public async Task<IActionResult> ExportSubscriptionsAsCsv()
+    {
+        Guid userId = User.GetUserId();
+
+        var subscriptions = await _subscriptionRepository.GetAllAsync(userId);
+
+        var csv = new StringBuilder();
+        csv.AppendLine("Name,Cost,Frequency,StartDate,RenewalDate,Category");
+
+        foreach (var sub in subscriptions)
+        {
+            var categoryName = sub.Category?.Name ?? "";
+            csv.AppendLine($"{EscapeCsvField(sub.Name)},{sub.Cost},{sub.Frequency},{sub.StartDate:yyyy-MM-dd},{sub.RenewalDate:yyyy-MM-dd},{EscapeCsvField(categoryName)}");
+        }
+
+        var bytes = Encoding.UTF8.GetBytes(csv.ToString());
+        return File(bytes, "text/csv", "subscriptions.csv");
+    }
+
+    private string EscapeCsvField(string field)
+    {
+        if (field.Contains(",") || field.Contains("\"") || field.Contains("\n"))
+        {
+            return $"\"{field.Replace("\"", "\"\"")}\"";
+        }
+        return field;
+    }
 }

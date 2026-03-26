@@ -76,9 +76,7 @@ export default function TotalExpenseWidget() {
                             />
                             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                             <YAxis tick={{ fontSize: 12 }} />
-                            <Tooltip
-                                formatter={(value: number) => `$${value}`}
-                            />
+                            <Tooltip />
                             <Area
                                 type="monotone"
                                 dataKey="amount"

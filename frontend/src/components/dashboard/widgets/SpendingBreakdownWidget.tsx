@@ -65,9 +65,7 @@ export default function SpendingBreakdownWidget() {
                                     />
                                 ))}
                             </Pie>
-                            <Tooltip
-                                formatter={(value: number) => `$${value}`}
-                            />
+                            <Tooltip />
                         </PieChart>
                     </ResponsiveContainer>
                 </div>

@@ -1,9 +1,6 @@
-﻿using backend.Data;
-using backend.DTOs;
+﻿using backend.DTOs;
 using backend.Models;
 using backend.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop.Infrastructure;
 
 namespace backend.Services;
 
@@ -36,7 +33,8 @@ public class SubscriptionService
             Name = dto.Name,
             Cost = dto.Cost,
             StartDate = dto.StartDate,
-            Frequency = dto.Frequency
+            Frequency = dto.Frequency,
+            CategoryId = dto.CategoryId
         };
         sub.RenewalDate = _billingService.CalculateNextBilling(sub.StartDate, sub.Frequency);
         await _repository.AddAsync(sub);
@@ -49,6 +47,7 @@ public class SubscriptionService
         subToUpdate.Cost = sub.Cost;
         subToUpdate.StartDate = sub.StartDate;
         subToUpdate.Frequency = sub.Frequency;
+        subToUpdate.CategoryId = sub.CategoryId;
 
         await _repository.UpdateAsync(subToUpdate);
     }

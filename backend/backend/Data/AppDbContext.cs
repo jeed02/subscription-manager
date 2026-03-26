@@ -11,4 +11,7 @@ public class AppDbContext : DbContext
     
     public DbSet<User> Users => Set<User>();
     public DbSet<Subscription> Subscriptions => Set<Subscription>();
+    public DbSet<UserPreferences> UserPreferences => Set<UserPreferences>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Budget> Budgets => Set<Budget>();
 }
