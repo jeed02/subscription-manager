@@ -1,5 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoChevronForwardSharp } from "react-icons/io5";
+import type { Category } from "../../types/settings";
+import { getFrequencyValue } from "../../utils/subscriptionMapper";
+
+interface SavePayload {
+    name: string;
+    cost: number;
+    frequency: number;
+    categoryId: string | null;
+    startDate: string;
+}
+
+interface SubscriptionCardProps {
+    name: string;
+    daysLeft: number;
+    cost: number;
+    logo: string;
+    frequency: string;
+    category: string;
+    categoryId?: string | null;
+    frequencyValue?: number;
+    startDate?: string;
+    categories?: Category[];
+    isSaving?: boolean;
+    onSave?: (payload: SavePayload) => Promise<void>;
+}
 
 export default function SubscriptionCard({
     name,
@@ -8,27 +33,60 @@ export default function SubscriptionCard({
     logo,
     frequency,
     category,
-}: {
-    name: string;
-    daysLeft: number;
-    cost: number;
-    logo: string;
-    frequency: string;
-    category: string;
-}) {
+    categoryId,
+    frequencyValue,
+    startDate,
+    categories = [],
+    isSaving = false,
+    onSave,
+}: SubscriptionCardProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [subscription, setSubscription] = useState({
         name,
         cost,
         frequency,
         category,
+        categoryId: categoryId ?? null,
+        frequencyValue: frequencyValue ?? getFrequencyValue(frequency),
+        startDate: startDate ?? new Date().toISOString(),
     });
     const [formState, setFormState] = useState({
         name,
         cost,
         frequency,
         category,
+        categoryId: categoryId ?? null as string | null,
+        startDate: startDate ?? new Date().toISOString(),
     });
+
+    useEffect(() => {
+        setSubscription({
+            name,
+            cost,
+            frequency,
+            category,
+            categoryId: categoryId ?? null,
+            frequencyValue: frequencyValue ?? getFrequencyValue(frequency),
+            startDate: startDate ?? new Date().toISOString(),
+        });
+
+        setFormState({
+            name,
+            cost,
+            frequency,
+            category,
+            categoryId: categoryId ?? null,
+            startDate: startDate ?? new Date().toISOString(),
+        });
+    }, [
+        name,
+        cost,
+        frequency,
+        category,
+        categoryId,
+        frequencyValue,
+        startDate,
+    ]);
 
     const openModal = () => {
         setFormState(subscription);
@@ -39,8 +97,29 @@ export default function SubscriptionCard({
         setIsOpen(false);
     };
 
-    const saveChanges = () => {
-        setSubscription(formState);
+    const saveChanges = async () => {
+        if (!onSave) {
+            setSubscription((prev) => ({
+                ...prev,
+                name: formState.name,
+                cost: formState.cost,
+                frequency: formState.frequency,
+                category: formState.category,
+                categoryId: formState.categoryId,
+                frequencyValue: getFrequencyValue(formState.frequency),
+            }));
+            setIsOpen(false);
+            return;
+        }
+
+        await onSave({
+            name: formState.name,
+            cost: formState.cost,
+            frequency: getFrequencyValue(formState.frequency),
+            categoryId: formState.categoryId,
+            startDate: formState.startDate,
+        });
+
         setIsOpen(false);
     };
 
@@ -129,25 +208,24 @@ export default function SubscriptionCard({
                                     Category
                                 </span>
                                 <select
-                                    value={formState.category}
+                                    value={formState.categoryId ?? ""}
                                     onChange={(e) =>
                                         setFormState((prev) => ({
                                             ...prev,
-                                            category: e.target.value,
+                                            category: categories.find(
+                                                (item) => item.id === e.target.value,
+                                            )?.name ?? "Uncategorized",
+                                            categoryId: e.target.value || null,
                                         }))
                                     }
                                     className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
                                 >
-                                    <option value="Entertainment">
-                                        Entertainment
-                                    </option>
-                                    <option value="Utilities">Utilities</option>
-                                    <option value="Productivity">
-                                        Productivity
-                                    </option>
-                                    <option value="Work">Work</option>
-                                    <option value="Health">Health</option>
-                                    <option value="Other">Other</option>
+                                    <option value="">Uncategorized</option>
+                                    {categories.map((item) => (
+                                        <option key={item.id} value={item.id}>
+                                            {item.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </label>
 
@@ -155,8 +233,7 @@ export default function SubscriptionCard({
                                 <span className="text-sm font-medium text-main-700">
                                     Frequency
                                 </span>
-                                <input
-                                    type="text"
+                                <select
                                     value={formState.frequency}
                                     onChange={(e) =>
                                         setFormState((prev) => ({
@@ -165,7 +242,13 @@ export default function SubscriptionCard({
                                         }))
                                     }
                                     className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
-                                />
+                                >
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="BiWeekly">BiWeekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Quarterly">Quarterly</option>
+                                    <option value="Yearly">Yearly</option>
+                                </select>
                             </label>
                         </div>
                         <div className="mt-5 flex justify-end gap-2">
@@ -176,10 +259,12 @@ export default function SubscriptionCard({
                                 Cancel
                             </button>
                             <button
-                                onClick={saveChanges}
+                                onClick={() => {
+                                    saveChanges().catch(() => undefined);
+                                }}
                                 className="rounded-lg bg-main-600 px-4 py-2 text-white hover:bg-main-700"
                             >
-                                Save
+                                {isSaving ? "Saving..." : "Save"}
                             </button>
                         </div>
                     </div>

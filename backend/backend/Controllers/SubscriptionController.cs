@@ -32,19 +32,19 @@ public class SubscriptionController : ControllerBase
         Guid userId = User.GetUserId();
 
         var subscriptions = await _subscriptionService.GetAllSubscriptions(userId);
-
-        return Ok(subscriptions);
+        return Ok(subscriptions.Select(MapSubscriptionToDto));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetSubscriptionByIdAsync(Guid id)
     {
-        Subscription subscription = await _subscriptionService.GetSubscription(id);
+        Subscription? subscription = await _subscriptionService.GetSubscription(id);
         if (subscription == null)
         {
             return NotFound();
         }
-        return Ok(subscription);
+
+        return Ok(MapSubscriptionToDto(subscription));
     }
 
     [HttpPost]
@@ -103,5 +103,30 @@ public class SubscriptionController : ControllerBase
             return $"\"{field.Replace("\"", "\"\"")}\"";
         }
         return field;
+    }
+
+    private static SubscriptionResponseDto MapSubscriptionToDto(Subscription subscription)
+    {
+        return new SubscriptionResponseDto
+        {
+            Id = subscription.Id,
+            Name = subscription.Name,
+            Cost = subscription.Cost,
+            Frequency = subscription.Frequency,
+            StartDate = subscription.StartDate,
+            RenewalDate = subscription.RenewalDate,
+            UserId = subscription.UserId,
+            CategoryId = subscription.CategoryId,
+            Category = subscription.Category == null
+                ? null
+                : new CategoryResponseDto
+                {
+                    Id = subscription.Category.Id,
+                    UserId = subscription.Category.UserId,
+                    Name = subscription.Category.Name,
+                    Color = subscription.Category.Color,
+                    CreatedAt = subscription.Category.CreatedAt
+                }
+        };
     }
 }

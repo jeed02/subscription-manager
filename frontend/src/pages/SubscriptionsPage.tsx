@@ -1,28 +1,76 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SubscriptionCard from "../components/dashboard/SubscriptionCard.tsx";
 import DashboardLayout from "../components/layout/DashboardLayout.tsx";
+import { useCategories } from "../hooks/useCategories";
+import { useSubscriptions } from "../hooks/useSubscriptions";
+import type { CreateSubscriptionRequest } from "../types/subscription";
+import {
+    getFrequencyValue,
+    toSubscriptionCardModel,
+} from "../utils/subscriptionMapper";
 
 export default function SubscriptionsPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);
+    const {
+        subscriptions,
+        loading,
+        mutating,
+        error,
+        addSubscription,
+        editSubscription,
+    } = useSubscriptions();
+    const { categories } = useCategories();
+
     const [newSub, setNewSub] = useState({
         name: "",
-        daysLeft: 0,
         cost: 0,
-        logo: "",
         frequency: "Monthly",
-        category: "Entertainment",
+        categoryId: "",
+        startDate: new Date().toISOString().slice(0, 10),
     });
 
+    const cardData = useMemo(
+        () => subscriptions.map((subscription) => toSubscriptionCardModel(subscription)),
+        [subscriptions],
+    );
+
     const openAddModal = () => setIsAddOpen(true);
-    const closeAddModal = () => setIsAddOpen(false);
-    const submitAddSubscription = () => {
-        // TODO: implement add-subscription submit logic
+    const closeAddModal = () => {
+        setIsAddOpen(false);
+        setNewSub({
+            name: "",
+            cost: 0,
+            frequency: "Monthly",
+            categoryId: "",
+            startDate: new Date().toISOString().slice(0, 10),
+        });
+    };
+
+    const submitAddSubscription = async () => {
+        if (!newSub.name.trim()) {
+            return;
+        }
+
+        const payload: CreateSubscriptionRequest = {
+            name: newSub.name.trim(),
+            cost: Number(newSub.cost),
+            startDate: new Date(newSub.startDate).toISOString(),
+            frequency: getFrequencyValue(newSub.frequency),
+            categoryId: newSub.categoryId || null,
+        };
+
+        await addSubscription(payload);
         closeAddModal();
     };
 
     return (
         <DashboardLayout>
             <h1 className="text-3xl mb-4">Subscriptions</h1>
+            {error && (
+                <div className="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700">
+                    {error}
+                </div>
+            )}
             <section className="my-6">
                 <div className="flex flex-row items-center justify-between mb-4">
                     <h1 className="text-xl font-medium">
@@ -36,86 +84,40 @@ export default function SubscriptionsPage() {
                     </button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={9}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={11}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={14}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={20}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={9}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={11}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={14}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={20}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
+                    {loading && (
+                        <p className="text-sm text-gray-500">Loading subscriptions...</p>
+                    )}
+
+                    {!loading && cardData.length === 0 && (
+                        <p className="text-sm text-gray-500">No subscriptions yet. Add one to get started.</p>
+                    )}
+
+                    {!loading &&
+                        cardData.map((subscription) => (
+                            <SubscriptionCard
+                                key={subscription.id}
+                                name={subscription.name}
+                                daysLeft={subscription.daysLeft}
+                                cost={subscription.cost}
+                                logo={subscription.logo}
+                                frequency={subscription.frequencyLabel}
+                                category={subscription.categoryLabel}
+                                categoryId={subscription.categoryId}
+                                frequencyValue={subscription.frequencyValue}
+                                startDate={subscription.startDate}
+                                categories={categories}
+                                onSave={async (payload) => {
+                                    await editSubscription(subscription.id, {
+                                        name: payload.name,
+                                        cost: payload.cost,
+                                        startDate: payload.startDate,
+                                        frequency: payload.frequency,
+                                        categoryId: payload.categoryId,
+                                    });
+                                }}
+                                isSaving={mutating}
+                            />
+                        ))}
                 </div>
             </section>
 
@@ -163,25 +165,21 @@ export default function SubscriptionsPage() {
                                     Category
                                 </span>
                                 <select
-                                    value={newSub.category}
+                                    value={newSub.categoryId}
                                     onChange={(e) =>
                                         setNewSub((prev) => ({
                                             ...prev,
-                                            category: e.target.value,
+                                            categoryId: e.target.value,
                                         }))
                                     }
                                     className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
                                 >
-                                    <option value="Entertainment">
-                                        Entertainment
-                                    </option>
-                                    <option value="Utilities">Utilities</option>
-                                    <option value="Productivity">
-                                        Productivity
-                                    </option>
-                                    <option value="Work">Work</option>
-                                    <option value="Health">Health</option>
-                                    <option value="Other">Other</option>
+                                    <option value="">Uncategorized</option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </label>
                             <label className="block">
@@ -199,10 +197,27 @@ export default function SubscriptionsPage() {
                                     className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
                                 >
                                     <option value="Weekly">Weekly</option>
+                                    <option value="BiWeekly">BiWeekly</option>
                                     <option value="Monthly">Monthly</option>
                                     <option value="Quarterly">Quarterly</option>
                                     <option value="Yearly">Yearly</option>
                                 </select>
+                            </label>
+                            <label className="block">
+                                <span className="text-sm font-medium text-main-700">
+                                    Start Date
+                                </span>
+                                <input
+                                    type="date"
+                                    value={newSub.startDate}
+                                    onChange={(e) =>
+                                        setNewSub((prev) => ({
+                                            ...prev,
+                                            startDate: e.target.value,
+                                        }))
+                                    }
+                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                />
                             </label>
                         </div>
                         <div className="mt-5 flex justify-end gap-2">
@@ -213,10 +228,12 @@ export default function SubscriptionsPage() {
                                 Cancel
                             </button>
                             <button
-                                onClick={submitAddSubscription}
+                                onClick={() => {
+                                    submitAddSubscription().catch(() => undefined);
+                                }}
                                 className="rounded-lg bg-main-600 px-4 py-2 text-white hover:bg-main-700"
                             >
-                                Create
+                                {mutating ? "Creating..." : "Create"}
                             </button>
                         </div>
                     </div>

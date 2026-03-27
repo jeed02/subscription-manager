@@ -22,9 +22,9 @@ export default function Sidebar({
 
     return (
         <div
-            className={`w-64 h-screen bg-main-10 flex flex-col lg:sticky lg:top-0 ${isOpen ? "fixed top-0 left-0 z-40" : "hidden lg:flex"}`}
+            className={`w-64 h-screen bg-main-20 flex flex-col lg:sticky lg:top-0 ${isOpen ? "fixed top-0 left-0 z-40" : "hidden lg:flex"}`}
         >
-            <div className="flex flex-col h-screen m-4 rounded border border-gray-200 rounded-4xl drop-shadow-xs">
+            <div className="flex flex-col h-screen bg-main-10 m-4 rounded border border-gray-200 rounded-4xl drop-shadow-xs">
                 {/* Logo */}
                 <div className="p-6 text-xl font-bold text-center">
                     SubManager

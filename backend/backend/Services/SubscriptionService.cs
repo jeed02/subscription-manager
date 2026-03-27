@@ -20,7 +20,7 @@ public class SubscriptionService
         return await _repository.GetAllAsync(userId);
     }
 
-    public async Task<Subscription> GetSubscription(Guid subscriptionId)
+    public async Task<Subscription?> GetSubscription(Guid subscriptionId)
     {
         return await _repository.GetByIdAsync(subscriptionId);
     }
@@ -43,6 +43,11 @@ public class SubscriptionService
     public async Task UpdateSubscription(Guid subId, UpdateSubscriptionDto sub)
     {
         var subToUpdate = await _repository.GetByIdAsync(subId);
+        if (subToUpdate == null)
+        {
+            return;
+        }
+
         subToUpdate.Name = sub.Name;
         subToUpdate.Cost = sub.Cost;
         subToUpdate.StartDate = sub.StartDate;

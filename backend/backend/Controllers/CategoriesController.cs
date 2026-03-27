@@ -26,7 +26,7 @@ public class CategoriesController : ControllerBase
         if (userId == null) return Unauthorized();
 
         var categories = await _categoryService.GetUserCategoriesAsync(Guid.Parse(userId));
-        return Ok(categories);
+        return Ok(categories.Select(MapCategoryToDto));
     }
 
     [HttpPost]
@@ -45,7 +45,7 @@ public class CategoriesController : ControllerBase
         try
         {
             var created = await _categoryService.CreateCategoryAsync(category);
-            return CreatedAtAction(nameof(GetCategories), new { id = created.Id }, created);
+            return CreatedAtAction(nameof(GetCategories), new { id = created.Id }, MapCategoryToDto(created));
         }
         catch (ArgumentException ex)
         {
@@ -70,7 +70,7 @@ public class CategoriesController : ControllerBase
         try
         {
             var updated = await _categoryService.UpdateCategoryAsync(category);
-            return Ok(updated);
+            return Ok(MapCategoryToDto(updated));
         }
         catch (KeyNotFoundException)
         {
@@ -97,5 +97,17 @@ public class CategoriesController : ControllerBase
         {
             return NotFound();
         }
+    }
+
+    private static CategoryResponseDto MapCategoryToDto(Category category)
+    {
+        return new CategoryResponseDto
+        {
+            Id = category.Id,
+            UserId = category.UserId,
+            Name = category.Name,
+            Color = category.Color,
+            CreatedAt = category.CreatedAt
+        };
     }
 }

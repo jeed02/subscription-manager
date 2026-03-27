@@ -11,6 +11,7 @@ public class BillingService
             BillingFrequency.Weekly => currentBillingDate.AddDays(7),
             BillingFrequency.BiWeekly => currentBillingDate.AddDays(14),
             BillingFrequency.Monthly => currentBillingDate.AddMonths(1),
+            BillingFrequency.Quarterly => currentBillingDate.AddMonths(3),
             BillingFrequency.Yearly => currentBillingDate.AddYears(1),
             _ => currentBillingDate
         };

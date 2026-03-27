@@ -46,7 +46,7 @@ public class SubscriptionRepository :ISubscriptionRepository
 
     public async Task DeleteAsync(Guid id)
     {
-        Subscription sub = GetByIdAsync(id).Result;
+        Subscription? sub = await GetByIdAsync(id);
 
         if (sub == null)
         {
