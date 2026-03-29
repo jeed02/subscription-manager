@@ -1,7 +1,9 @@
 import type {
-  ApiSubscription,
-  CreateSubscriptionRequest,
-  UpdateSubscriptionRequest,
+    ApiSubscription,
+    CreateSubscriptionRequest,
+    DashboardCategoryBreakdownResponse,
+    DashboardTransactionsResponse,
+    UpdateSubscriptionRequest,
 } from "../types/subscription";
 import { api } from "../utils/api";
 
@@ -26,3 +28,15 @@ export const updateSubscription = async (
 export const deleteSubscription = async (id: string): Promise<void> => {
     await api.delete(`/subscription/${id}`);
 };
+
+export const getDashboardTransactions =
+    async (): Promise<DashboardTransactionsResponse> => {
+        const response = await api.get("/subscription/dashboard-widgets");
+        return response.data;
+    };
+
+export const getDashboardCategories =
+    async (): Promise<DashboardCategoryBreakdownResponse> => {
+        const response = await api.get("/subscription/dashboard-categories");
+        return response.data;
+    };

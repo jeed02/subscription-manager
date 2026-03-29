@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import SubscriptionCard from "../components/dashboard/SubscriptionCard.tsx";
 import LatestTransactionsWidget from "../components/dashboard/widgets/LatestTransactionsWidget.tsx";
@@ -5,8 +6,32 @@ import SubscriptionCategoryWidget from "../components/dashboard/widgets/Subscrip
 import TotalExpenseWidget from "../components/dashboard/widgets/TotalExpenseWidget.tsx";
 import UpcomingTransactionsWidget from "../components/dashboard/widgets/UpcomingTransactionsWidget.tsx";
 import DashboardLayout from "../components/layout/DashboardLayout.tsx";
+import { useCategoryBreakdown } from "../hooks/useCategoryBreakdown.ts";
+import { useSubscriptions } from "../hooks/useSubscriptions";
+import { useTransactions } from "../hooks/useTransactions";
+import { toSubscriptionCardModel } from "../utils/subscriptionMapper";
 
 export default function DashboardPage() {
+    const { subscriptions, loading, error } = useSubscriptions();
+    const {
+        latestTransactions,
+        upcomingTransactions,
+        loading: transactionsLoading,
+        error: transactionsError,
+    } = useTransactions();
+    const {
+        categories: categoryBreakdown,
+        loading: categoryBreakdownLoading,
+        error: categoryBreakdownError,
+    } = useCategoryBreakdown();
+    const renewSubscriptions = useMemo(
+        () =>
+            subscriptions
+                .slice(0, 4)
+                .map((subscription) => toSubscriptionCardModel(subscription)),
+        [subscriptions],
+    );
+
     return (
         <DashboardLayout>
             <h1 className="text-3xl mb-4 font-medium">Dashboard</h1>
@@ -22,46 +47,37 @@ export default function DashboardPage() {
                     </NavLink>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <SubscriptionCard
-                        name={"Netflix"}
-                        daysLeft={9}
-                        cost={12}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=netflix.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Entertainment"
-                    />
-                    <SubscriptionCard
-                        name={"Spotify"}
-                        daysLeft={11}
-                        cost={10}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=spotify.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Music"
-                    />
-                    <SubscriptionCard
-                        name={"Notion"}
-                        daysLeft={14}
-                        cost={8}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=notion.so&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Productivity"
-                    />
-                    <SubscriptionCard
-                        name={"Microsoft 365"}
-                        daysLeft={20}
-                        cost={6.99}
-                        logo={
-                            "https://www.google.com/s2/favicons?domain=microsoft.com&sz=128"
-                        }
-                        frequency="Monthly"
-                        category="Work"
-                    />
+                    {loading && (
+                        <p className="text-sm text-gray-500">
+                            Loading subscriptions...
+                        </p>
+                    )}
+
+                    {!loading && error && (
+                        <p className="text-sm text-red-600">
+                            Failed to load subscriptions.
+                        </p>
+                    )}
+
+                    {!loading && !error && renewSubscriptions.length === 0 && (
+                        <p className="text-sm text-gray-500">
+                            No subscriptions yet.
+                        </p>
+                    )}
+
+                    {!loading &&
+                        !error &&
+                        renewSubscriptions.map((subscription) => (
+                            <SubscriptionCard
+                                key={subscription.id}
+                                name={subscription.name}
+                                daysLeft={subscription.daysLeft}
+                                cost={subscription.cost}
+                                logo={subscription.logo}
+                                frequency={subscription.frequencyLabel}
+                                category={subscription.categoryLabel}
+                            />
+                        ))}
                 </div>
             </section>
 
@@ -77,7 +93,11 @@ export default function DashboardPage() {
             <section className="my-6">
                 <div className="grid grid-cols-2 gap-6">
                     <TotalExpenseWidget />
-                    <SubscriptionCategoryWidget />
+                    <SubscriptionCategoryWidget
+                        items={categoryBreakdown}
+                        loading={categoryBreakdownLoading}
+                        error={categoryBreakdownError}
+                    />
                 </div>
             </section>
 
@@ -89,8 +109,16 @@ export default function DashboardPage() {
                     </NavLink>
                 </div>
                 <div className="grid grid-cols-2 gap-6">
-                    <LatestTransactionsWidget />
-                    <UpcomingTransactionsWidget />
+                    <LatestTransactionsWidget
+                        items={latestTransactions}
+                        loading={transactionsLoading}
+                        error={transactionsError}
+                    />
+                    <UpcomingTransactionsWidget
+                        items={upcomingTransactions}
+                        loading={transactionsLoading}
+                        error={transactionsError}
+                    />
                 </div>
             </section>
         </DashboardLayout>

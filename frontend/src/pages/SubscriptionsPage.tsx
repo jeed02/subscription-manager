@@ -18,6 +18,7 @@ export default function SubscriptionsPage() {
         error,
         addSubscription,
         editSubscription,
+        removeSubscription,
     } = useSubscriptions();
     const { categories } = useCategories();
 
@@ -30,7 +31,10 @@ export default function SubscriptionsPage() {
     });
 
     const cardData = useMemo(
-        () => subscriptions.map((subscription) => toSubscriptionCardModel(subscription)),
+        () =>
+            subscriptions.map((subscription) =>
+                toSubscriptionCardModel(subscription),
+            ),
         [subscriptions],
     );
 
@@ -85,11 +89,15 @@ export default function SubscriptionsPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     {loading && (
-                        <p className="text-sm text-gray-500">Loading subscriptions...</p>
+                        <p className="text-sm text-gray-500">
+                            Loading subscriptions...
+                        </p>
                     )}
 
                     {!loading && cardData.length === 0 && (
-                        <p className="text-sm text-gray-500">No subscriptions yet. Add one to get started.</p>
+                        <p className="text-sm text-gray-500">
+                            No subscriptions yet. Add one to get started.
+                        </p>
                     )}
 
                     {!loading &&
@@ -116,6 +124,10 @@ export default function SubscriptionsPage() {
                                     });
                                 }}
                                 isSaving={mutating}
+                                isDeleting={mutating}
+                                onDelete={async () => {
+                                    await removeSubscription(subscription.id);
+                                }}
                             />
                         ))}
                 </div>
@@ -176,7 +188,10 @@ export default function SubscriptionsPage() {
                                 >
                                     <option value="">Uncategorized</option>
                                     {categories.map((category) => (
-                                        <option key={category.id} value={category.id}>
+                                        <option
+                                            key={category.id}
+                                            value={category.id}
+                                        >
                                             {category.name}
                                         </option>
                                     ))}
@@ -229,7 +244,9 @@ export default function SubscriptionsPage() {
                             </button>
                             <button
                                 onClick={() => {
-                                    submitAddSubscription().catch(() => undefined);
+                                    submitAddSubscription().catch(
+                                        () => undefined,
+                                    );
                                 }}
                                 className="rounded-lg bg-main-600 px-4 py-2 text-white hover:bg-main-700"
                             >

@@ -16,4 +16,10 @@ public class BillingService
             _ => currentBillingDate
         };
     }
+
+    public int CalculateDaysUntilRenewal(DateTime renewalDate)
+    {
+        var days = (renewalDate.Date - DateTime.Today).Days;
+        return Math.Max(0, days);
+    }
 }

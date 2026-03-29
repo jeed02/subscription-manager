@@ -61,6 +61,70 @@ public class SubscriptionService
     {
         await _repository.DeleteAsync(id);
     }
-    
-    
+
+    public async Task<DashboardTransactionsResponseDto> GetDashboardTransactions(Guid userId)
+    {
+        var ascending = await _repository.GetAllOrderedByRenewalDateAsync(userId, true);
+        var descending = await _repository.GetAllOrderedByRenewalDateAsync(userId, false);
+
+        var upcoming = ascending
+            .Select(MapToDto)
+            .OrderBy(s => s.DaysUntilRenewal)
+            .ThenBy(s => s.Name)
+            .Take(5)
+            .ToList();
+
+        var latest = descending
+            .Select(MapToDto)
+            .OrderByDescending(s => s.DaysUntilRenewal)
+            .ThenBy(s => s.Name)
+            .Take(5)
+            .ToList();
+
+        return new DashboardTransactionsResponseDto
+        {
+            LatestTransactions = latest,
+            UpcomingTransactions = upcoming
+        };
+    }
+
+    public async Task<DashboardCategoryBreakdownResponseDto> GetDashboardCategoryBreakdown(Guid userId)
+    {
+        var categories = await _repository.GetDashboardCategoryCountsAsync(userId);
+
+        return new DashboardCategoryBreakdownResponseDto
+        {
+            Categories = categories
+                .Where(category => category.SubscriptionCount > 0)
+                .OrderByDescending(category => category.SubscriptionCount)
+                .ThenBy(category => category.Name, StringComparer.OrdinalIgnoreCase)
+                .ToList()
+        };
+    }
+
+    private SubscriptionResponseDto MapToDto(Subscription subscription)
+    {
+        return new SubscriptionResponseDto
+        {
+            Id = subscription.Id,
+            Name = subscription.Name,
+            Cost = subscription.Cost,
+            Frequency = subscription.Frequency,
+            StartDate = subscription.StartDate,
+            RenewalDate = subscription.RenewalDate,
+            DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate),
+            UserId = subscription.UserId,
+            CategoryId = subscription.CategoryId,
+            Category = subscription.Category == null
+                ? null
+                : new CategoryResponseDto
+                {
+                    Id = subscription.Category.Id,
+                    UserId = subscription.Category.UserId,
+                    Name = subscription.Category.Name,
+                    Color = subscription.Category.Color,
+                    CreatedAt = subscription.Category.CreatedAt
+                }
+        };
+    }
 }

@@ -10,6 +10,32 @@ export interface ApiSubscription {
     userId: string;
     categoryId: string | null;
     category?: Category | null;
+    daysUntilRenewal?: number;
+}
+
+export interface DashboardTransactionsResponse {
+    latestTransactions: ApiSubscription[];
+    upcomingTransactions: ApiSubscription[];
+}
+
+export interface CategoryBreakdownItem {
+    categoryId: string | null;
+    name: string;
+    color: string;
+    subscriptionCount: number;
+}
+
+export interface DashboardCategoryBreakdownResponse {
+    categories: CategoryBreakdownItem[];
+}
+
+export interface TransactionWidgetItem {
+    id: string;
+    name: string;
+    cost: number;
+    frequencyLabel: string;
+    logo: string;
+    daysLeft: number;
 }
 
 export interface SubscriptionCardModel {

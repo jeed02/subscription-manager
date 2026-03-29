@@ -23,7 +23,9 @@ interface SubscriptionCardProps {
     startDate?: string;
     categories?: Category[];
     isSaving?: boolean;
+    isDeleting?: boolean;
     onSave?: (payload: SavePayload) => Promise<void>;
+    onDelete?: () => Promise<void>;
 }
 
 export default function SubscriptionCard({
@@ -38,9 +40,12 @@ export default function SubscriptionCard({
     startDate,
     categories = [],
     isSaving = false,
+    isDeleting = false,
     onSave,
+    onDelete,
 }: SubscriptionCardProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [subscription, setSubscription] = useState({
         name,
         cost,
@@ -55,7 +60,7 @@ export default function SubscriptionCard({
         cost,
         frequency,
         category,
-        categoryId: categoryId ?? null as string | null,
+        categoryId: categoryId ?? (null as string | null),
         startDate: startDate ?? new Date().toISOString(),
     });
 
@@ -90,10 +95,12 @@ export default function SubscriptionCard({
 
     const openModal = () => {
         setFormState(subscription);
+        setShowDeleteConfirm(false);
         setIsOpen(true);
     };
 
     const closeModal = () => {
+        setShowDeleteConfirm(false);
         setIsOpen(false);
     };
 
@@ -121,6 +128,15 @@ export default function SubscriptionCard({
         });
 
         setIsOpen(false);
+    };
+
+    const deleteSubscription = async () => {
+        if (!onDelete) {
+            return;
+        }
+
+        await onDelete();
+        closeModal();
     };
 
     return (
@@ -212,9 +228,12 @@ export default function SubscriptionCard({
                                     onChange={(e) =>
                                         setFormState((prev) => ({
                                             ...prev,
-                                            category: categories.find(
-                                                (item) => item.id === e.target.value,
-                                            )?.name ?? "Uncategorized",
+                                            category:
+                                                categories.find(
+                                                    (item) =>
+                                                        item.id ===
+                                                        e.target.value,
+                                                )?.name ?? "Uncategorized",
                                             categoryId: e.target.value || null,
                                         }))
                                     }
@@ -251,6 +270,52 @@ export default function SubscriptionCard({
                                 </select>
                             </label>
                         </div>
+
+                        {onDelete && (
+                            <div className="mt-5 rounded-lg border border-red-200 bg-red-50 p-3">
+                                {!showDeleteConfirm ? (
+                                    <button
+                                        onClick={() =>
+                                            setShowDeleteConfirm(true)
+                                        }
+                                        className="rounded-lg border border-red-300 px-3 py-2 text-sm text-red-700 hover:bg-red-100"
+                                    >
+                                        Delete Subscription
+                                    </button>
+                                ) : (
+                                    <div className="space-y-3">
+                                        <p className="text-sm text-red-800">
+                                            Are you sure you want to delete this
+                                            subscription? This action cannot be
+                                            undone.
+                                        </p>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() =>
+                                                    setShowDeleteConfirm(false)
+                                                }
+                                                className="rounded-lg border border-main-300 px-3 py-2 text-sm text-main-700"
+                                            >
+                                                Keep Subscription
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    deleteSubscription().catch(
+                                                        () => undefined,
+                                                    );
+                                                }}
+                                                className="rounded-lg bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700"
+                                            >
+                                                {isDeleting
+                                                    ? "Deleting..."
+                                                    : "Yes, Delete"}
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         <div className="mt-5 flex justify-end gap-2">
                             <button
                                 onClick={closeModal}

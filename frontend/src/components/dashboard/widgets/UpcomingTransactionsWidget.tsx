@@ -1,30 +1,65 @@
+import type { TransactionWidgetItem } from "../../../types/subscription";
 import Widget from "../Widget.tsx";
 
-const UpcomingTransactionsWidget = () => {
-    const subs =  [
-        { name: "Netflix", cost: "$15", logo: "https://www.google.com/s2/favicons?domain=netflix.com&sz=128", frequency: "Monthly" },
-        { name: "Spotify", cost: "$10", logo: "https://www.google.com/s2/favicons?domain=spotify.com&sz=128", frequency: "Monthly" },
-        { name: "Amazon", cost: "$10", logo: "https://www.google.com/s2/favicons?domain=amazon.com&sz=128", frequency: "Monthly" },
+interface UpcomingTransactionsWidgetProps {
+    items: TransactionWidgetItem[];
+    loading: boolean;
+    error: string | null;
+}
 
-    ];
+const UpcomingTransactionsWidget = ({
+    items,
+    loading,
+    error,
+}: UpcomingTransactionsWidgetProps) => {
     return (
         <Widget title="Upcoming">
-            <ul className="space-y-6">
-                {subs.map((sub) => (
-                    <li key={sub.name} className="flex flex-row justify-between content-center w-full">
-                        <div className="flex flex-row gap-3">
-                            <img src={sub.logo} alt="logo" width={40} height={40} />
-                            <div className="flex flex-col">
-                                <span className="text-md">{sub.name}</span>
-                                <span className="text-sm text-gray-400">{sub.frequency}</span>
-                            </div>
-                        </div>
+            {loading && (
+                <p className="text-sm text-gray-500">
+                    Loading upcoming transactions...
+                </p>
+            )}
+            {!loading && error && (
+                <p className="text-sm text-red-600">
+                    Failed to load upcoming transactions.
+                </p>
+            )}
+            {!loading && !error && items.length === 0 && (
+                <p className="text-sm text-gray-500">
+                    No upcoming transactions yet.
+                </p>
+            )}
 
-                        <span className="text-lg text-main-500">{sub.cost}</span>
-                    </li>
-                ))}
-            </ul>
+            {!loading && !error && items.length > 0 && (
+                <ul className="space-y-6">
+                    {items.map((sub) => (
+                        <li
+                            key={sub.id}
+                            className="flex flex-row justify-between content-center w-full"
+                        >
+                            <div className="flex flex-row gap-3">
+                                <img
+                                    src={sub.logo}
+                                    alt="logo"
+                                    width={40}
+                                    height={40}
+                                />
+                                <div className="flex flex-col">
+                                    <span className="text-md">{sub.name}</span>
+                                    <span className="text-sm text-gray-400">
+                                        {sub.frequencyLabel}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <span className="text-lg text-main-500">
+                                ${sub.cost.toFixed(2)}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </Widget>
-    )
-}
-export default UpcomingTransactionsWidget
+    );
+};
+export default UpcomingTransactionsWidget;

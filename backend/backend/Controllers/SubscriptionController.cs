@@ -18,12 +18,17 @@ public class SubscriptionController : ControllerBase
 {
     private readonly SubscriptionService _subscriptionService;
     private readonly ISubscriptionRepository _subscriptionRepository;
+    private readonly BillingService _billingService;
 
     
-    public SubscriptionController(SubscriptionService subscriptionService, ISubscriptionRepository subscriptionRepository)
+    public SubscriptionController(
+        SubscriptionService subscriptionService,
+        ISubscriptionRepository subscriptionRepository,
+        BillingService billingService)
     {
         _subscriptionService = subscriptionService;
         _subscriptionRepository = subscriptionRepository;
+        _billingService = billingService;
     }
     
     [HttpGet]
@@ -35,7 +40,7 @@ public class SubscriptionController : ControllerBase
         return Ok(subscriptions.Select(MapSubscriptionToDto));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetSubscriptionByIdAsync(Guid id)
     {
         Subscription? subscription = await _subscriptionService.GetSubscription(id);
@@ -45,6 +50,22 @@ public class SubscriptionController : ControllerBase
         }
 
         return Ok(MapSubscriptionToDto(subscription));
+    }
+
+    [HttpGet("dashboard-widgets")]
+    public async Task<IActionResult> GetDashboardWidgets()
+    {
+        Guid userId = User.GetUserId();
+        var response = await _subscriptionService.GetDashboardTransactions(userId);
+        return Ok(response);
+    }
+
+    [HttpGet("dashboard-categories")]
+    public async Task<IActionResult> GetDashboardCategories()
+    {
+        Guid userId = User.GetUserId();
+        var response = await _subscriptionService.GetDashboardCategoryBreakdown(userId);
+        return Ok(response);
     }
 
     [HttpPost]
@@ -105,7 +126,7 @@ public class SubscriptionController : ControllerBase
         return field;
     }
 
-    private static SubscriptionResponseDto MapSubscriptionToDto(Subscription subscription)
+    private SubscriptionResponseDto MapSubscriptionToDto(Subscription subscription)
     {
         return new SubscriptionResponseDto
         {
@@ -115,6 +136,7 @@ public class SubscriptionController : ControllerBase
             Frequency = subscription.Frequency,
             StartDate = subscription.StartDate,
             RenewalDate = subscription.RenewalDate,
+            DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate),
             UserId = subscription.UserId,
             CategoryId = subscription.CategoryId,
             Category = subscription.Category == null

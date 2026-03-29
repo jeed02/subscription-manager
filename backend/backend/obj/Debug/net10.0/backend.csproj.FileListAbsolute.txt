@@ -132,3 +132,10 @@ C:\Users\jdbri\Documents\Projects\subscription-manager\backend\backend\bin\Debug
 C:\Users\jdbri\Documents\Projects\subscription-manager\backend\backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\jdbri\Documents\Projects\subscription-manager\backend\backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\jdbri\Documents\Projects\subscription-manager\backend\backend\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\appsettings.Development.json
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\appsettings.json
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\backend.staticwebassets.endpoints.json
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\backend.deps.json
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\backend.runtimeconfig.json
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\backend.dll
+c:\Users\jdbri\Documents\Projects\subscription-manager\backend\build-verify\backend.pdb
