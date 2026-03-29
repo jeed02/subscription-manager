@@ -48,6 +48,22 @@ public class DashboardMonthlyExpensesResponseDto
     public List<MonthlyExpensePointDto> MonthlyExpenses { get; set; } = [];
 }
 
+public class DashboardCategorySpendingItemDto
+{
+    public Guid? CategoryId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
+    public decimal Amount { get; set; }
+}
+
+public class DashboardSpendingBreakdownResponseDto
+{
+    public int Year { get; set; }
+    public int Month { get; set; }
+    public string Label { get; set; } = string.Empty;
+    public List<DashboardCategorySpendingItemDto> Categories { get; set; } = [];
+}
+
 public class SubscriptionPriceHistoryItemDto
 {
     public Guid Id { get; set; }

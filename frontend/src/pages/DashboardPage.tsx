@@ -7,6 +7,7 @@ import TotalExpenseWidget from "../components/dashboard/widgets/TotalExpenseWidg
 import UpcomingTransactionsWidget from "../components/dashboard/widgets/UpcomingTransactionsWidget.tsx";
 import DashboardLayout from "../components/layout/DashboardLayout.tsx";
 import { useCategoryBreakdown } from "../hooks/useCategoryBreakdown.ts";
+import { useMonthlyExpenses } from "../hooks/useMonthlyExpenses";
 import { useSubscriptions } from "../hooks/useSubscriptions";
 import { useTransactions } from "../hooks/useTransactions";
 import { toSubscriptionCardModel } from "../utils/subscriptionMapper";
@@ -24,6 +25,11 @@ export default function DashboardPage() {
         loading: categoryBreakdownLoading,
         error: categoryBreakdownError,
     } = useCategoryBreakdown();
+    const {
+        monthlyExpenses,
+        loading: monthlyExpensesLoading,
+        error: monthlyExpensesError,
+    } = useMonthlyExpenses();
     const renewSubscriptions = useMemo(
         () =>
             subscriptions
@@ -92,7 +98,11 @@ export default function DashboardPage() {
 
             <section className="my-6">
                 <div className="grid grid-cols-2 gap-6">
-                    <TotalExpenseWidget />
+                    <TotalExpenseWidget
+                        items={monthlyExpenses}
+                        loading={monthlyExpensesLoading}
+                        error={monthlyExpensesError}
+                    />
                     <SubscriptionCategoryWidget
                         items={categoryBreakdown}
                         loading={categoryBreakdownLoading}

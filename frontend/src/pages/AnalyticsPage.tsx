@@ -3,9 +3,15 @@ import SubscriptionCategoryWidget from "../components/dashboard/widgets/Subscrip
 import TotalExpenseWidget from "../components/dashboard/widgets/TotalExpenseWidget.tsx";
 import DashboardLayout from "../components/layout/DashboardLayout.tsx";
 import { useCategoryBreakdown } from "../hooks/useCategoryBreakdown.ts";
+import { useMonthlyExpenses } from "../hooks/useMonthlyExpenses";
 
 export default function AnalyticsPage() {
     const { categories, loading, error } = useCategoryBreakdown();
+    const {
+        monthlyExpenses,
+        loading: monthlyExpensesLoading,
+        error: monthlyExpensesError,
+    } = useMonthlyExpenses();
 
     return (
         <DashboardLayout>
@@ -14,7 +20,11 @@ export default function AnalyticsPage() {
             <section className="my-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <SpendingBreakdownWidget />
-                    <TotalExpenseWidget />
+                    <TotalExpenseWidget
+                        items={monthlyExpenses}
+                        loading={monthlyExpensesLoading}
+                        error={monthlyExpensesError}
+                    />
                     <SubscriptionCategoryWidget
                         items={categories}
                         loading={loading}

@@ -68,6 +68,38 @@ public class SubscriptionController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("dashboard-monthly-expenses")]
+    public async Task<IActionResult> GetDashboardMonthlyExpenses()
+    {
+        Guid userId = User.GetUserId();
+        var response = await _subscriptionService.GetDashboardMonthlyExpenses(userId);
+        return Ok(response);
+    }
+
+    [HttpGet("dashboard-spending-breakdown")]
+    public async Task<IActionResult> GetDashboardSpendingBreakdown([FromQuery] int? year, [FromQuery] int? month)
+    {
+        Guid userId = User.GetUserId();
+
+        try
+        {
+            var response = await _subscriptionService.GetDashboardSpendingBreakdown(userId, year, month);
+            return Ok(response);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("{id:guid}/price-history")]
+    public async Task<IActionResult> GetSubscriptionPriceHistory(Guid id)
+    {
+        Guid userId = User.GetUserId();
+        var response = await _subscriptionService.GetSubscriptionPriceHistory(id, userId);
+        return Ok(response);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateSubscription(CreateSubscriptionDto dto)
     {

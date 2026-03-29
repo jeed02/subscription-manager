@@ -18,6 +18,8 @@ public class Subscription
 
     public DateTime RenewalDate { get; set; }
 
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
     public required Guid UserId { get; set; }
 
     public User? User { get; set; }
@@ -25,4 +27,6 @@ public class Subscription
     public Guid? CategoryId { get; set; }
 
     public Category? Category { get; set; }
+
+    public ICollection<SubscriptionPriceHistory> PriceHistory { get; set; } = new List<SubscriptionPriceHistory>();
 }

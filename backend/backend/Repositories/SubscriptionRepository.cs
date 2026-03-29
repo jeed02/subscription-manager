@@ -69,9 +69,23 @@ public class SubscriptionRepository :ISubscriptionRepository
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
+    public async Task<List<SubscriptionPriceHistory>> GetPriceHistoryAsync(Guid subscriptionId, Guid userId)
+    {
+        return await _context.SubscriptionPriceHistory
+            .Where(h => h.SubscriptionId == subscriptionId && h.Subscription!.UserId == userId)
+            .OrderByDescending(h => h.ChangedAt)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Subscription subscription)
     {
         _context.Subscriptions.Add(subscription);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AddPriceHistoryAsync(SubscriptionPriceHistory history)
+    {
+        _context.SubscriptionPriceHistory.Add(history);
         await _context.SaveChangesAsync();
     }
 

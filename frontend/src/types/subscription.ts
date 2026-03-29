@@ -29,6 +29,43 @@ export interface DashboardCategoryBreakdownResponse {
     categories: CategoryBreakdownItem[];
 }
 
+export interface MonthlyExpensePoint {
+    year: number;
+    month: number;
+    label: string;
+    amount: number;
+}
+
+export interface DashboardMonthlyExpensesResponse {
+    monthlyExpenses: MonthlyExpensePoint[];
+}
+
+export interface CategorySpendingItem {
+    categoryId: string | null;
+    name: string;
+    color: string;
+    amount: number;
+}
+
+export interface DashboardSpendingBreakdownResponse {
+    year: number;
+    month: number;
+    label: string;
+    categories: CategorySpendingItem[];
+}
+
+export interface SubscriptionPriceHistoryItem {
+    id: string;
+    subscriptionId: string;
+    previousCost: number;
+    newCost: number;
+    changedAt: string;
+}
+
+export interface SubscriptionPriceHistoryResponse {
+    history: SubscriptionPriceHistoryItem[];
+}
+
 export interface TransactionWidgetItem {
     id: string;
     name: string;

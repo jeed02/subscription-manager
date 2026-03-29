@@ -10,7 +10,9 @@ public interface ISubscriptionRepository
     Task<List<DashboardCategoryCountItemDto>> GetDashboardCategoryCountsAsync(Guid userId);
     Task<List<Subscription>> GetByUserIdAsync(Guid userId);
     Task<Subscription?> GetByIdAsync(Guid id);
+    Task<List<SubscriptionPriceHistory>> GetPriceHistoryAsync(Guid subscriptionId, Guid userId);
     Task AddAsync(Subscription subscription);
+    Task AddPriceHistoryAsync(SubscriptionPriceHistory history);
     Task UpdateAsync(Subscription subscription);
     Task DeleteAsync(Guid id);
 }
