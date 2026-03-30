@@ -20,7 +20,7 @@ const mapToTransactionItem = (
     logo: buildLogoUrl(subscription.name),
     daysLeft:
         subscription.daysUntilRenewal ??
-        calculateDaysLeft(subscription.renewalDate),
+        calculateDaysLeft(subscription.renewalDate, subscription.frequency),
 });
 
 export const useTransactions = () => {

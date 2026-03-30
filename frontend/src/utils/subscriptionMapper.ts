@@ -1,6 +1,6 @@
 import type {
-  ApiSubscription,
-  SubscriptionCardModel,
+    ApiSubscription,
+    SubscriptionCardModel,
 } from "../types/subscription";
 
 const FALLBACK_FREQUENCY = 3;
@@ -22,7 +22,9 @@ export const frequencyValueMap: Record<string, number> = {
 };
 
 export const getFrequencyLabel = (frequency: number): string => {
-    return frequencyLabelMap[frequency] ?? frequencyLabelMap[FALLBACK_FREQUENCY];
+    return (
+        frequencyLabelMap[frequency] ?? frequencyLabelMap[FALLBACK_FREQUENCY]
+    );
 };
 
 export const getFrequencyValue = (label: string): number => {
@@ -30,18 +32,92 @@ export const getFrequencyValue = (label: string): number => {
     return frequencyValueMap[normalized] ?? FALLBACK_FREQUENCY;
 };
 
-export const calculateDaysLeft = (renewalDate: string): number => {
+const addFrequencyToDate = (date: Date, frequency: number): Date => {
+    switch (frequency) {
+        case 1:
+            return new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate() + 7,
+            );
+        case 2:
+            return new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate() + 14,
+            );
+        case 3:
+            return new Date(
+                date.getFullYear(),
+                date.getMonth() + 1,
+                date.getDate(),
+            );
+        case 4:
+            return new Date(
+                date.getFullYear(),
+                date.getMonth() + 3,
+                date.getDate(),
+            );
+        case 5:
+            return new Date(
+                date.getFullYear() + 1,
+                date.getMonth(),
+                date.getDate(),
+            );
+        default:
+            return date;
+    }
+};
+
+const getNextUpcomingRenewalDate = (
+    renewalDate: string,
+    frequency: number,
+): Date | null => {
     const renewal = new Date(renewalDate);
-    const now = new Date();
-    const diffMs = renewal.getTime() - now.getTime();
-    return Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+    if (Number.isNaN(renewal.getTime())) {
+        return null;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const nextRenewal = new Date(renewal);
+    nextRenewal.setHours(0, 0, 0, 0);
+
+    while (nextRenewal < today) {
+        const advanced = addFrequencyToDate(nextRenewal, frequency);
+        if (advanced.getTime() <= nextRenewal.getTime()) {
+            break;
+        }
+
+        nextRenewal.setTime(advanced.getTime());
+    }
+
+    return nextRenewal;
+};
+
+export const calculateDaysLeft = (
+    renewalDate: string,
+    frequency: number,
+): number => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const nextRenewal = getNextUpcomingRenewalDate(renewalDate, frequency);
+    if (!nextRenewal) {
+        return 0;
+    }
+
+    const diffMs = nextRenewal.getTime() - today.getTime();
+    const dayMs = 1000 * 60 * 60 * 24;
+    return Math.max(0, Math.floor(diffMs / dayMs));
 };
 
 export const buildLogoUrl = (subscriptionName: string): string => {
     const fallbackDomain = "example.com";
-    const domain = `${subscriptionName
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "") || "example"}.com`;
+    const domain = `${
+        subscriptionName.toLowerCase().replace(/[^a-z0-9]/g, "") || "example"
+    }.com`;
 
     return `https://www.google.com/s2/favicons?domain=${domain || fallbackDomain}&sz=128`;
 };
@@ -57,7 +133,9 @@ export const toSubscriptionCardModel = (
         frequencyValue: subscription.frequency,
         categoryLabel: subscription.category?.name ?? "Uncategorized",
         categoryId: subscription.categoryId,
-        daysLeft: calculateDaysLeft(subscription.renewalDate),
+        daysLeft:
+            subscription.daysUntilRenewal ??
+            calculateDaysLeft(subscription.renewalDate, subscription.frequency),
         logo: buildLogoUrl(subscription.name),
         startDate: subscription.startDate,
     };

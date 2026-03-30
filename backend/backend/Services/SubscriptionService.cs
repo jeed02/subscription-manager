@@ -240,6 +240,11 @@ public class SubscriptionService
 
     private SubscriptionResponseDto MapToDto(Subscription subscription)
     {
+        var nextRenewalDate = _billingService.CalculateNextUpcomingRenewalDate(
+            subscription.RenewalDate,
+            subscription.Frequency
+        );
+
         return new SubscriptionResponseDto
         {
             Id = subscription.Id,
@@ -247,8 +252,8 @@ public class SubscriptionService
             Cost = subscription.Cost,
             Frequency = subscription.Frequency,
             StartDate = subscription.StartDate,
-            RenewalDate = subscription.RenewalDate,
-            DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate),
+            RenewalDate = nextRenewalDate,
+            DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate, subscription.Frequency),
             UserId = subscription.UserId,
             CategoryId = subscription.CategoryId,
             Category = subscription.Category == null

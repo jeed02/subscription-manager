@@ -142,7 +142,8 @@ public class SubscriptionController : ControllerBase
         foreach (var sub in subscriptions)
         {
             var categoryName = sub.Category?.Name ?? "";
-            csv.AppendLine($"{EscapeCsvField(sub.Name)},{sub.Cost},{sub.Frequency},{sub.StartDate:yyyy-MM-dd},{sub.RenewalDate:yyyy-MM-dd},{EscapeCsvField(categoryName)}");
+            var nextRenewalDate = _billingService.CalculateNextUpcomingRenewalDate(sub.RenewalDate, sub.Frequency);
+            csv.AppendLine($"{EscapeCsvField(sub.Name)},{sub.Cost},{sub.Frequency},{sub.StartDate:yyyy-MM-dd},{nextRenewalDate:yyyy-MM-dd},{EscapeCsvField(categoryName)}");
         }
 
         var bytes = Encoding.UTF8.GetBytes(csv.ToString());
@@ -160,6 +161,11 @@ public class SubscriptionController : ControllerBase
 
     private SubscriptionResponseDto MapSubscriptionToDto(Subscription subscription)
     {
+        var nextRenewalDate = _billingService.CalculateNextUpcomingRenewalDate(
+            subscription.RenewalDate,
+            subscription.Frequency
+        );
+
         return new SubscriptionResponseDto
         {
             Id = subscription.Id,
@@ -167,8 +173,8 @@ public class SubscriptionController : ControllerBase
             Cost = subscription.Cost,
             Frequency = subscription.Frequency,
             StartDate = subscription.StartDate,
-            RenewalDate = subscription.RenewalDate,
-            DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate),
+            RenewalDate = nextRenewalDate,
+            DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate, subscription.Frequency),
             UserId = subscription.UserId,
             CategoryId = subscription.CategoryId,
             Category = subscription.Category == null

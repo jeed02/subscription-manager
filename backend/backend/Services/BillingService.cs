@@ -17,9 +17,29 @@ public class BillingService
         };
     }
 
-    public int CalculateDaysUntilRenewal(DateTime renewalDate)
+    public DateTime CalculateNextUpcomingRenewalDate(DateTime renewalDate, BillingFrequency frequency)
     {
-        var days = (renewalDate.Date - DateTime.Today).Days;
+        var today = DateTime.Today;
+        var nextRenewalDate = renewalDate.Date;
+
+        while (nextRenewalDate < today)
+        {
+            var advancedDate = CalculateNextBilling(nextRenewalDate, frequency).Date;
+            if (advancedDate <= nextRenewalDate)
+            {
+                break;
+            }
+
+            nextRenewalDate = advancedDate;
+        }
+
+        return nextRenewalDate;
+    }
+
+    public int CalculateDaysUntilRenewal(DateTime renewalDate, BillingFrequency frequency)
+    {
+        var nextRenewalDate = CalculateNextUpcomingRenewalDate(renewalDate, frequency);
+        var days = (nextRenewalDate - DateTime.Today).Days;
         return Math.Max(0, days);
     }
 }
