@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { api } from "../../utils/api";
 
 export default function ExportSection() {
     const [loading, setLoading] = useState(false);
@@ -9,19 +10,11 @@ export default function ExportSection() {
         setError("");
 
         try {
-            const response = await fetch("/api/subscriptions/export/csv", {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+            const response = await api.get("/subscription/export/csv", {
+                responseType: "blob",
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to export subscriptions");
-            }
-
-            // Create a blob from the response
-            const blob = await response.blob();
+            const blob = response.data as Blob;
 
             // Create a download link
             const url = window.URL.createObjectURL(blob);

@@ -36,6 +36,7 @@ public class SubscriptionService
             StartDate = dto.StartDate,
             Frequency = dto.Frequency,
             CategoryId = dto.CategoryId,
+            Description = dto.Description,
             UpdatedAt = DateTime.UtcNow
         };
         sub.RenewalDate = _billingService.CalculateNextBilling(sub.StartDate, sub.Frequency);
@@ -57,6 +58,7 @@ public class SubscriptionService
         subToUpdate.StartDate = sub.StartDate;
         subToUpdate.Frequency = sub.Frequency;
         subToUpdate.CategoryId = sub.CategoryId;
+        subToUpdate.Description = sub.Description;
         subToUpdate.UpdatedAt = DateTime.UtcNow;
 
         await _repository.UpdateAsync(subToUpdate);
@@ -256,6 +258,7 @@ public class SubscriptionService
             DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate, subscription.Frequency),
             UserId = subscription.UserId,
             CategoryId = subscription.CategoryId,
+            Description = subscription.Description,
             Category = subscription.Category == null
                 ? null
                 : new CategoryResponseDto

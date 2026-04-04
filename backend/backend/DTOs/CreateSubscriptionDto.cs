@@ -9,4 +9,5 @@ public class CreateSubscriptionDto
     public DateTime StartDate { get; set; }
     public BillingFrequency Frequency { get; set; }
     public Guid? CategoryId { get; set; }
+    public string? Description { get; set; }
 }

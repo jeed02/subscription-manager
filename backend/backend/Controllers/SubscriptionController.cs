@@ -173,6 +173,7 @@ public class SubscriptionController : ControllerBase
             Cost = subscription.Cost,
             Frequency = subscription.Frequency,
             StartDate = subscription.StartDate,
+            Description = subscription.Description,
             RenewalDate = nextRenewalDate,
             DaysUntilRenewal = _billingService.CalculateDaysUntilRenewal(subscription.RenewalDate, subscription.Frequency),
             UserId = subscription.UserId,

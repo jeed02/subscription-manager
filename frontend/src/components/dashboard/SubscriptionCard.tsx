@@ -9,6 +9,7 @@ interface SavePayload {
     frequency: number;
     categoryId: string | null;
     startDate: string;
+    description?: string | null;
 }
 
 interface SubscriptionCardProps {
@@ -21,6 +22,7 @@ interface SubscriptionCardProps {
     categoryId?: string | null;
     frequencyValue?: number;
     startDate?: string;
+    description?: string | null;
     categories?: Category[];
     isSaving?: boolean;
     isDeleting?: boolean;
@@ -38,6 +40,7 @@ export default function SubscriptionCard({
     categoryId,
     frequencyValue,
     startDate,
+    description,
     categories = [],
     isSaving = false,
     isDeleting = false,
@@ -54,6 +57,7 @@ export default function SubscriptionCard({
         categoryId: categoryId ?? null,
         frequencyValue: frequencyValue ?? getFrequencyValue(frequency),
         startDate: startDate ?? new Date().toISOString(),
+        description: description ?? null,
     });
     const [formState, setFormState] = useState({
         name,
@@ -62,6 +66,7 @@ export default function SubscriptionCard({
         category,
         categoryId: categoryId ?? (null as string | null),
         startDate: startDate ?? new Date().toISOString(),
+        description: description ?? (null as string | null),
     });
 
     useEffect(() => {
@@ -73,6 +78,7 @@ export default function SubscriptionCard({
             categoryId: categoryId ?? null,
             frequencyValue: frequencyValue ?? getFrequencyValue(frequency),
             startDate: startDate ?? new Date().toISOString(),
+            description: description ?? null,
         });
 
         setFormState({
@@ -82,6 +88,7 @@ export default function SubscriptionCard({
             category,
             categoryId: categoryId ?? null,
             startDate: startDate ?? new Date().toISOString(),
+            description: description ?? (null as string | null),
         });
     }, [
         name,
@@ -91,10 +98,19 @@ export default function SubscriptionCard({
         categoryId,
         frequencyValue,
         startDate,
+        description,
     ]);
 
     const openModal = () => {
-        setFormState(subscription);
+        setFormState({
+            name: subscription.name,
+            cost: subscription.cost,
+            frequency: subscription.frequency,
+            category: subscription.category,
+            categoryId: subscription.categoryId,
+            startDate: subscription.startDate,
+            description: subscription.description,
+        });
         setShowDeleteConfirm(false);
         setIsOpen(true);
     };
@@ -114,6 +130,7 @@ export default function SubscriptionCard({
                 category: formState.category,
                 categoryId: formState.categoryId,
                 frequencyValue: getFrequencyValue(formState.frequency),
+                description: formState.description || null,
             }));
             setIsOpen(false);
             return;
@@ -125,6 +142,7 @@ export default function SubscriptionCard({
             frequency: getFrequencyValue(formState.frequency),
             categoryId: formState.categoryId,
             startDate: formState.startDate,
+            description: formState.description || null,
         });
 
         setIsOpen(false);
@@ -154,11 +172,14 @@ export default function SubscriptionCard({
                                 {subscription.name}
                             </h1>
                             <p className="text-sm text-gray-400">
-                                {subscription.frequency}
-                            </p>
-                            <p className="text-sm text-gray-400">
+                                {subscription.frequency} •{" "}
                                 {subscription.category}
                             </p>
+                            {subscription.description ? (
+                                <p className="text-sm text-gray-400">
+                                    {subscription.description}
+                                </p>
+                            ) : null}
                         </div>
                     </div>
 
@@ -180,7 +201,7 @@ export default function SubscriptionCard({
 
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+                    <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
                         <h2 className="mb-4 text-xl font-semibold">
                             Edit Subscription
                         </h2>
@@ -268,6 +289,29 @@ export default function SubscriptionCard({
                                     <option value="Quarterly">Quarterly</option>
                                     <option value="Yearly">Yearly</option>
                                 </select>
+                            </label>
+
+                            <label className="block">
+                                <span className="text-sm font-medium text-main-700">
+                                    Description
+                                </span>
+                                {formState.description && (
+                                    <p className="mt-1 text-sm text-main-800 rounded-lg bg-main-50 border border-main-200 px-3 py-2">
+                                        {formState.description}
+                                    </p>
+                                )}
+                                <textarea
+                                    value={formState.description ?? ""}
+                                    onChange={(e) =>
+                                        setFormState((prev) => ({
+                                            ...prev,
+                                            description: e.target.value,
+                                        }))
+                                    }
+                                    rows={3}
+                                    placeholder="Optional description..."
+                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2 resize-none"
+                                />
                             </label>
                         </div>
 

@@ -138,5 +138,6 @@ export const toSubscriptionCardModel = (
             calculateDaysLeft(subscription.renewalDate, subscription.frequency),
         logo: buildLogoUrl(subscription.name),
         startDate: subscription.startDate,
+        description: subscription.description,
     };
 };

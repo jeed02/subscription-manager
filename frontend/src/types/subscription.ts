@@ -11,6 +11,7 @@ export interface ApiSubscription {
     categoryId: string | null;
     category?: Category | null;
     daysUntilRenewal?: number;
+    description?: string | null;
 }
 
 export interface DashboardTransactionsResponse {
@@ -86,6 +87,7 @@ export interface SubscriptionCardModel {
     daysLeft: number;
     logo: string;
     startDate: string;
+    description?: string | null;
 }
 
 export interface CreateSubscriptionRequest {
@@ -94,6 +96,7 @@ export interface CreateSubscriptionRequest {
     startDate: string;
     frequency: number;
     categoryId: string | null;
+    description?: string | null;
 }
 
 export interface UpdateSubscriptionRequest {
@@ -102,4 +105,5 @@ export interface UpdateSubscriptionRequest {
     startDate: string;
     frequency: number;
     categoryId: string | null;
+    description?: string | null;
 }

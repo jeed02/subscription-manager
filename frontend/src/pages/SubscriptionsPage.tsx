@@ -28,6 +28,7 @@ export default function SubscriptionsPage() {
         frequency: "Monthly",
         categoryId: "",
         startDate: new Date().toISOString().slice(0, 10),
+        description: "",
     });
 
     const cardData = useMemo(
@@ -47,6 +48,7 @@ export default function SubscriptionsPage() {
             frequency: "Monthly",
             categoryId: "",
             startDate: new Date().toISOString().slice(0, 10),
+            description: "",
         });
     };
 
@@ -61,6 +63,7 @@ export default function SubscriptionsPage() {
             startDate: new Date(newSub.startDate).toISOString(),
             frequency: getFrequencyValue(newSub.frequency),
             categoryId: newSub.categoryId || null,
+            description: newSub.description.trim() || null,
         };
 
         await addSubscription(payload);
@@ -113,6 +116,7 @@ export default function SubscriptionsPage() {
                                 categoryId={subscription.categoryId}
                                 frequencyValue={subscription.frequencyValue}
                                 startDate={subscription.startDate}
+                                description={subscription.description}
                                 categories={categories}
                                 onSave={async (payload) => {
                                     await editSubscription(subscription.id, {
@@ -121,6 +125,7 @@ export default function SubscriptionsPage() {
                                         startDate: payload.startDate,
                                         frequency: payload.frequency,
                                         categoryId: payload.categoryId,
+                                        description: payload.description,
                                     });
                                 }}
                                 isSaving={mutating}
@@ -232,6 +237,23 @@ export default function SubscriptionsPage() {
                                         }))
                                     }
                                     className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                />
+                            </label>
+                            <label className="block">
+                                <span className="text-sm font-medium text-main-700">
+                                    Description
+                                </span>
+                                <textarea
+                                    value={newSub.description}
+                                    onChange={(e) =>
+                                        setNewSub((prev) => ({
+                                            ...prev,
+                                            description: e.target.value,
+                                        }))
+                                    }
+                                    rows={3}
+                                    placeholder="Optional description..."
+                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2 resize-none"
                                 />
                             </label>
                         </div>
