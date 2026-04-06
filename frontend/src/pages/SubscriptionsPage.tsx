@@ -39,6 +39,19 @@ export default function SubscriptionsPage() {
         [subscriptions],
     );
 
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredCardData = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return cardData;
+        return cardData.filter(
+            (s) =>
+                s.name.toLowerCase().includes(q) ||
+                s.categoryLabel.toLowerCase().includes(q) ||
+                (s.description?.toLowerCase().includes(q) ?? false),
+        );
+    }, [cardData, searchQuery]);
+
     const openAddModal = () => setIsAddOpen(true);
     const closeAddModal = () => {
         setIsAddOpen(false);
@@ -72,7 +85,13 @@ export default function SubscriptionsPage() {
 
     return (
         <DashboardLayout>
-            <h1 className="text-3xl mb-4">Subscriptions</h1>
+            <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search subscriptions..."
+                className="mb-4 w-full rounded-lg border border-main-300 px-4 py-2 text-sm text-main-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-main-400"
+            />
             {error && (
                 <div className="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700">
                     {error}
@@ -97,14 +116,16 @@ export default function SubscriptionsPage() {
                         </p>
                     )}
 
-                    {!loading && cardData.length === 0 && (
+                    {!loading && filteredCardData.length === 0 && (
                         <p className="text-sm text-gray-500">
-                            No subscriptions yet. Add one to get started.
+                            {searchQuery.trim()
+                                ? "No subscriptions match your search."
+                                : "No subscriptions yet. Add one to get started."}
                         </p>
                     )}
 
                     {!loading &&
-                        cardData.map((subscription) => (
+                        filteredCardData.map((subscription) => (
                             <SubscriptionCard
                                 key={subscription.id}
                                 name={subscription.name}
