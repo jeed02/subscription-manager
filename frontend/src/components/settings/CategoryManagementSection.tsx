@@ -97,7 +97,7 @@ export default function CategoryManagementSection() {
 
     if (loading) {
         return (
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg border border-main-400 shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">Categories</h2>
                 <div className="text-center py-4">Loading...</div>
             </div>
@@ -105,12 +105,12 @@ export default function CategoryManagementSection() {
     }
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Categories</h2>
                 <button
                     onClick={() => setShowCreateForm(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="px-4 py-2 border border-main-300 text-main-700 hover:bg-main-100 rounded-md"
                 >
                     Add Category
                 </button>

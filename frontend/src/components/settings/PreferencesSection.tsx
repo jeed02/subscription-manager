@@ -56,7 +56,7 @@ export default function PreferencesSection() {
             formData.notificationsEnabled !== preferences.notificationsEnabled);
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Preferences</h2>
 
             {error && (

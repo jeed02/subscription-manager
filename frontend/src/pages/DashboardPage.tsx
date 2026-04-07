@@ -40,7 +40,7 @@ export default function DashboardPage() {
 
     return (
         <DashboardLayout>
-            <h1 className="text-3xl mb-4 font-medium">Dashboard</h1>
+            <h1 className="text-3xl mb-4">Dashboard</h1>
 
             <section className="my-6">
                 <div className="flex flex-row items-center justify-between mb-4">

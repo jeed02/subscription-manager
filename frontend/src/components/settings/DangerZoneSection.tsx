@@ -28,7 +28,7 @@ export default function DangerZoneSection() {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
+        <div className="bg-white rounded-lg shadow p-6 border-l-4  border-red-500">
             <h2 className="text-xl font-semibold mb-4 text-red-600">
                 Danger Zone
             </h2>

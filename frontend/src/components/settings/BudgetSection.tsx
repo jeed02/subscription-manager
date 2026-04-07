@@ -126,12 +126,12 @@ export default function BudgetSection() {
     }
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Budgets</h2>
                 <button
                     onClick={() => setShowCreateForm(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="px-4 py-2 rounded-md border border-main-300 text-main-700 hover:bg-main-100"
                 >
                     Add Budget
                 </button>
