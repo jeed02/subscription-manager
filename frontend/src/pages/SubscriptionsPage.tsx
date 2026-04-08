@@ -192,7 +192,9 @@ export default function SubscriptionsPage() {
                                     onChange={(e) =>
                                         setNewSub((prev) => ({
                                             ...prev,
-                                            cost: Number(e.target.value),
+                                            cost: Number(
+                                                e.target.valueAsNumber,
+                                            ),
                                         }))
                                     }
                                     className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
