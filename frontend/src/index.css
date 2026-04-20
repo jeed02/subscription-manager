@@ -17,7 +17,7 @@
     --color-main-700: #365e37;
     --color-main-800: #234024;
     --color-main-900: #112211;
-    --color-main-950: #071408;
+    --color-main-950: #1e1e1e;
 }
 
 :root {
@@ -29,4 +29,8 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+    color-scheme: dark;
 }

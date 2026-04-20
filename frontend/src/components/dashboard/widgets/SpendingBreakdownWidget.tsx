@@ -28,10 +28,10 @@ export default function SpendingBreakdownWidget() {
         <Widget title="Spending Breakdown">
             <div className="mb-4 flex items-center justify-between gap-4">
                 <div>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-white">
                         {label || "Selected month"}
                     </p>
-                    <p className="text-2xl font-semibold text-main-900">
+                    <p className="text-2xl font-semibold text-main-900 dark:text-white">
                         ${total.toLocaleString()}
                     </p>
                 </div>
@@ -41,13 +41,13 @@ export default function SpendingBreakdownWidget() {
                     min={minMonth}
                     max={maxMonth}
                     onChange={(event) => setSelectedMonth(event.target.value)}
-                    className="rounded-md border border-main-200 px-2 py-1 text-sm text-main-800"
+                    className="rounded-md border border-main-200 px-2 py-1 text-sm text-main-800 dark:text-white"
                     aria-label="Select month"
                 />
             </div>
 
             {loading && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-white">
                     Loading spending breakdown...
                 </p>
             )}
@@ -59,7 +59,7 @@ export default function SpendingBreakdownWidget() {
             )}
 
             {!loading && !error && chartData.length === 0 && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-white">
                     No spending data for this month.
                 </p>
             )}
@@ -79,7 +79,7 @@ export default function SpendingBreakdownWidget() {
                                             backgroundColor: item.fill,
                                         }}
                                     />
-                                    <span className="truncate text-sm text-main-800">
+                                    <span className="truncate text-sm text-main-800 dark:text-white">
                                         {item.category}
                                     </span>
                                 </div>

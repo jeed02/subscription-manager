@@ -57,7 +57,7 @@ export default function ProfileSection() {
     };
 
     return (
-        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
+        <div className="bg-white dark:bg-main-950 rounded-lg border border-main-400 shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Profile</h2>
 
             {error && (
@@ -68,7 +68,7 @@ export default function ProfileSection() {
 
             {/* Email Section */}
             <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-main-200 mb-2">
                     Email Address
                 </label>
                 {isEditingEmail ? (
@@ -79,7 +79,7 @@ export default function ProfileSection() {
                             onChange={(e) =>
                                 setEmailForm({ email: e.target.value })
                             }
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                         <button
@@ -92,14 +92,16 @@ export default function ProfileSection() {
                         <button
                             type="button"
                             onClick={() => setIsEditingEmail(false)}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                            className="px-4 py-2 bg-gray-300 dark:bg-main-700 text-gray-700 dark:text-main-200 rounded-md hover:bg-gray-400 dark:hover:bg-main-600"
                         >
                             Cancel
                         </button>
                     </form>
                 ) : (
                     <div className="flex items-center justify-between">
-                        <span className="text-gray-900">{user?.email}</span>
+                        <span className="text-gray-900 dark:text-main-100">
+                            {user?.email}
+                        </span>
                         <button
                             onClick={() => setIsEditingEmail(true)}
                             className="text-blue-600 hover:text-blue-800"
@@ -112,7 +114,7 @@ export default function ProfileSection() {
 
             {/* Password Section */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-main-200 mb-2">
                     Password
                 </label>
                 {isChangingPassword ? (
@@ -127,7 +129,7 @@ export default function ProfileSection() {
                                     currentPassword: e.target.value,
                                 })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                         <input
@@ -140,7 +142,7 @@ export default function ProfileSection() {
                                     newPassword: e.target.value,
                                 })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                         <div className="flex gap-2">
@@ -154,7 +156,7 @@ export default function ProfileSection() {
                             <button
                                 type="button"
                                 onClick={() => setIsChangingPassword(false)}
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                                className="px-4 py-2 bg-gray-300 dark:bg-main-700 text-gray-700 dark:text-main-200 rounded-md hover:bg-gray-400 dark:hover:bg-main-600"
                             >
                                 Cancel
                             </button>
@@ -162,7 +164,9 @@ export default function ProfileSection() {
                     </form>
                 ) : (
                     <div className="flex items-center justify-between">
-                        <span className="text-gray-500">••••••••</span>
+                        <span className="text-gray-500 dark:text-main-400">
+                            ••••••••
+                        </span>
                         <button
                             onClick={() => setIsChangingPassword(true)}
                             className="text-blue-600 hover:text-blue-800"

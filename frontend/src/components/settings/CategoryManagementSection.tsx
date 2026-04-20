@@ -97,7 +97,7 @@ export default function CategoryManagementSection() {
 
     if (loading) {
         return (
-            <div className="bg-white rounded-lg border border-main-400 shadow p-6">
+            <div className="bg-white dark:bg-main-800 rounded-lg border border-main-400 shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">Categories</h2>
                 <div className="text-center py-4">Loading...</div>
             </div>
@@ -105,12 +105,12 @@ export default function CategoryManagementSection() {
     }
 
     return (
-        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
+        <div className="bg-white dark:bg-main-950 rounded-lg border border-main-400 shadow p-6">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Categories</h2>
                 <button
                     onClick={() => setShowCreateForm(true)}
-                    className="px-4 py-2 border border-main-300 text-main-700 hover:bg-main-100 rounded-md"
+                    className="px-4 py-2 border border-main-300 text-main-400 hover:bg-main-100 rounded-md"
                 >
                     Add Category
                 </button>
@@ -126,7 +126,7 @@ export default function CategoryManagementSection() {
             {showCreateForm && (
                 <form
                     onSubmit={handleCreate}
-                    className="mb-6 p-4 bg-gray-50 rounded-lg"
+                    className="mb-6 p-4 bg-gray-50 dark:bg-main-700 rounded-lg"
                 >
                     <h3 className="font-medium mb-3">Create New Category</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -140,7 +140,7 @@ export default function CategoryManagementSection() {
                                     name: e.target.value,
                                 })
                             }
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                         <input
@@ -152,7 +152,7 @@ export default function CategoryManagementSection() {
                                     color: e.target.value,
                                 })
                             }
-                            className="px-3 py-2 border border-gray-300 rounded-md h-10"
+                            className="px-3 py-2 border border-gray-300 dark:border-main-600 rounded-md h-10"
                         />
                     </div>
                     <div className="flex gap-2">
@@ -165,7 +165,7 @@ export default function CategoryManagementSection() {
                         <button
                             type="button"
                             onClick={() => setShowCreateForm(false)}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                            className="px-4 py-2 bg-gray-300 dark:bg-main-700 text-gray-700 dark:text-main-200 rounded-md hover:bg-gray-400 dark:hover:bg-main-600"
                         >
                             Cancel
                         </button>
@@ -176,14 +176,14 @@ export default function CategoryManagementSection() {
             {/* Categories List */}
             <div className="space-y-3">
                 {categories.length === 0 ? (
-                    <p className="text-gray-500 text-center py-4">
+                    <p className="text-gray-500 dark:text-main-400 text-center py-4">
                         No categories yet. Create your first category!
                     </p>
                 ) : (
                     categories.map((category) => (
                         <div
                             key={category.id}
-                            className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                            className="flex items-center justify-between p-3 border border-gray-200 dark:border-main-700 rounded-lg"
                         >
                             {editingId === category.id ? (
                                 <form
@@ -199,7 +199,7 @@ export default function CategoryManagementSection() {
                                                 name: e.target.value,
                                             })
                                         }
-                                        className="flex-1 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="flex-1 px-3 py-1 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         required
                                     />
                                     <input
@@ -211,7 +211,7 @@ export default function CategoryManagementSection() {
                                                 color: e.target.value,
                                             })
                                         }
-                                        className="w-12 h-8 border border-gray-300 rounded"
+                                        className="w-12 h-8 border border-gray-300 dark:border-main-600 rounded"
                                     />
                                     <button
                                         type="submit"
@@ -222,7 +222,7 @@ export default function CategoryManagementSection() {
                                     <button
                                         type="button"
                                         onClick={() => setEditingId(null)}
-                                        className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm"
+                                        className="px-3 py-1 bg-gray-300 dark:bg-main-700 text-gray-700 dark:text-main-200 rounded hover:bg-gray-400 dark:hover:bg-main-600 text-sm"
                                     >
                                         Cancel
                                     </button>

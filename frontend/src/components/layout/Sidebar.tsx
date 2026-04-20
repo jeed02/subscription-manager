@@ -22,9 +22,9 @@ export default function Sidebar({
 
     return (
         <div
-            className={`w-64 h-screen bg-main-20 flex flex-col lg:sticky lg:top-0 ${isOpen ? "fixed top-0 left-0 z-40" : "hidden lg:flex"}`}
+            className={`w-64 h-screen bg-main-20 dark:bg-main-950 flex flex-col lg:sticky lg:top-0 ${isOpen ? "fixed top-0 left-0 z-40" : "hidden lg:flex"}`}
         >
-            <div className="flex flex-col h-screen bg-main-10 m-4 rounded border border-gray-200 rounded-4xl drop-shadow-xs">
+            <div className="flex flex-col h-screen bg-main-10 dark:bg-main-950 m-4 rounded border border-gray-200 dark:border-main-700 rounded-4xl drop-shadow-xs">
                 {/* Logo */}
                 <div className="p-6 text-xl font-bold text-center">
                     SubManager
@@ -78,7 +78,7 @@ export default function Sidebar({
                 </nav>
 
                 {/* Footer */}
-                <div className="p-6 text-sm text-gray-400 flex flex-col">
+                <div className="p-6 text-sm text-gray-400 dark:text-main-400 flex flex-col">
                     <button
                         onClick={() => {
                             logout();

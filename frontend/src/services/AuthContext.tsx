@@ -29,6 +29,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
+    useEffect(() => {
+        const root = document.documentElement;
+        if (preferences?.theme === "dark") {
+            root.classList.add("dark");
+        } else {
+            root.classList.remove("dark");
+        }
+    }, [preferences?.theme]);
+
     const refreshUser = async () => {
         try {
             const userData = await getProfile();

@@ -56,7 +56,7 @@ export default function PreferencesSection() {
             formData.notificationsEnabled !== preferences.notificationsEnabled);
 
     return (
-        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
+        <div className="bg-white dark:bg-main-950 rounded-lg border border-main-400 shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Preferences</h2>
 
             {error && (
@@ -68,7 +68,7 @@ export default function PreferencesSection() {
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Currency */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-main-200 mb-2">
                         Currency
                     </label>
                     <select
@@ -79,7 +79,7 @@ export default function PreferencesSection() {
                                 currency: e.target.value,
                             })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-800 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         {CURRENCIES.map((currency) => (
                             <option key={currency.value} value={currency.value}>
@@ -91,7 +91,7 @@ export default function PreferencesSection() {
 
                 {/* Theme */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-main-200 mb-2">
                         Theme
                     </label>
                     <div className="space-y-2">
@@ -142,7 +142,7 @@ export default function PreferencesSection() {
                             }
                             className="mr-2"
                         />
-                        <span className="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700 dark:text-main-200">
                             Enable notifications for billing start dates
                         </span>
                     </label>

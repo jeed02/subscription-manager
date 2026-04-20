@@ -37,7 +37,7 @@ export default function ExportSection() {
     };
 
     return (
-        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
+        <div className="bg-white dark:bg-main-950 rounded-lg border border-main-400 shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Export Data</h2>
 
             {error && (
@@ -48,10 +48,10 @@ export default function ExportSection() {
 
             <div className="space-y-4">
                 <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-main-100 mb-2">
                         Download Subscriptions as CSV
                     </h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <p className="text-sm text-gray-600 dark:text-main-300 mb-4">
                         Export all your subscriptions to a CSV file for backup,
                         analysis, or use in other applications. The file will
                         include subscription name, cost, frequency, start date,

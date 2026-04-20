@@ -15,7 +15,7 @@ const UpcomingTransactionsWidget = ({
     return (
         <Widget title="Upcoming">
             {loading && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-main-400">
                     Loading upcoming transactions...
                 </p>
             )}
@@ -25,7 +25,7 @@ const UpcomingTransactionsWidget = ({
                 </p>
             )}
             {!loading && !error && items.length === 0 && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-main-400">
                     No upcoming transactions yet.
                 </p>
             )}
@@ -46,9 +46,7 @@ const UpcomingTransactionsWidget = ({
                                 />
                                 <div className="flex flex-col">
                                     <span className="text-md">{sub.name}</span>
-                                    <span className="text-sm text-gray-400">
-                                        {sub.frequencyLabel}
-                                    </span>
+                                    <span className="text-sm text-gray-400 dark:text-main-400"></span>
                                 </div>
                             </div>
 

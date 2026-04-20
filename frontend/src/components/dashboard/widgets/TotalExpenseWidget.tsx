@@ -31,7 +31,9 @@ export default function TotalExpenseWidget({
     return (
         <Widget title="Total Expenses">
             {loading && (
-                <p className="text-sm text-gray-500">Loading expenses...</p>
+                <p className="text-sm text-gray-500 dark:text-white">
+                    Loading expenses...
+                </p>
             )}
 
             {!loading && error && (
@@ -39,14 +41,16 @@ export default function TotalExpenseWidget({
             )}
 
             {!loading && !error && items.length === 0 && (
-                <p className="text-sm text-gray-500">No expense data yet.</p>
+                <p className="text-sm text-gray-500 dark:text-white">
+                    No expense data yet.
+                </p>
             )}
 
             {!loading && !error && items.length > 0 && (
                 <div className="flex flex-col gap-4">
                     <div className="flex items-end justify-between gap-4">
                         <div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-gray-500 dark:text-main-200">
                                 Last 12 months
                             </div>
                             <div className="text-3xl font-semibold text-main-900">

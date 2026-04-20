@@ -20,7 +20,7 @@ export default function SubscriptionCategoryWidget({
     return (
         <Widget title="Categories">
             {loading && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-main-400">
                     Loading category breakdown...
                 </p>
             )}
@@ -32,7 +32,9 @@ export default function SubscriptionCategoryWidget({
             )}
 
             {!loading && !error && items.length === 0 && (
-                <p className="text-sm text-gray-500">No category data yet.</p>
+                <p className="text-sm text-gray-500 dark:text-main-400">
+                    No category data yet.
+                </p>
             )}
 
             {!loading && !error && items.length > 0 && (
@@ -54,7 +56,7 @@ export default function SubscriptionCategoryWidget({
                                                 backgroundColor: item.color,
                                             }}
                                         />
-                                        <span className="truncate text-sm font-medium text-main-900">
+                                        <span className="truncate text-sm font-medium text-main-900 dark:text-white">
                                             {item.name}
                                         </span>
                                     </div>

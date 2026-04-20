@@ -10,9 +10,9 @@ export default function DashboardLayout({
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="flex bg-main-20 lg:px-16">
+        <div className="flex bg-main-20 dark:bg-main-950 dark:text-white lg:px-16">
             <button
-                className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-main-10 rounded shadow"
+                className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-main-10 dark:bg-main-800 rounded shadow"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
             >
                 <IoMenu size={24} />

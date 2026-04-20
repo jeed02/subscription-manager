@@ -159,7 +159,7 @@ export default function SubscriptionCard({
 
     return (
         <>
-            <div className="flex flex-col gap-3 bg-main-10 rounded-xl shadow-sm border border-main-400 p-4 lg:px-6 lg:py-5 ">
+            <div className="flex flex-col gap-3 bg-main-10 dark:bg-main-950 rounded-xl shadow-sm border border-main-400 p-4 lg:px-6 lg:py-5 ">
                 <div className="flex flex-row items-center justify-between h-3/4">
                     <div className="flex flex-row items-center justify-between lg:gap-4 md:gap-3">
                         <img
@@ -168,15 +168,14 @@ export default function SubscriptionCard({
                             className="lg:h-9 lg:w-9 md:h-7 md:w-7 rounded"
                         />
                         <div className="flex flex-col">
-                            <h1 className="lg:text-xl md:text-lg">
+                            <h1 className="lg:text-xl md:text-lg dark:text-white">
                                 {subscription.name}
                             </h1>
-                            <p className="text-sm text-gray-400">
-                                {subscription.frequency} •{" "}
+                            <p className="text-sm text-gray-400 dark:text-main-400">
                                 {subscription.category}
                             </p>
                             {subscription.description ? (
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-gray-400 dark:text-main-400">
                                     {subscription.description}
                                 </p>
                             ) : null}
@@ -184,16 +183,16 @@ export default function SubscriptionCard({
                     </div>
 
                     <button onClick={openModal} className="cursor-pointer">
-                        <IoChevronForwardSharp className="lg:text-2xl text-main-800 md:text-lg" />
+                        <IoChevronForwardSharp className="lg:text-2xl text-main-800 dark:text-main-300 md:text-lg" />
                     </button>
                 </div>
 
-                <div className="flex flex-row items-center justify-between gap-2 h-1/4 text-main-900">
-                    <div className="rounded-4xl bg-main-50 p-2 text-center md:text-sm">
+                <div className="flex flex-row items-center justify-between gap-2 h-1/4 text-main-900 dark:text-white">
+                    <div className="rounded-4xl bg-main-50 dark:bg-main-900 dark:border dark:border-main-700 p-2 text-center md:text-sm">
                         {daysLeft} days left
                     </div>
 
-                    <div className="rounded-4xl bg-main-50 p-2 text-center md:text-sm">
+                    <div className="rounded-4xl bg-main-50 dark:bg-main-900 dark:border dark:border-main-700 p-2 text-center md:text-sm">
                         ${subscription.cost}
                     </div>
                 </div>
@@ -201,13 +200,13 @@ export default function SubscriptionCard({
 
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-                        <h2 className="mb-4 text-xl font-semibold">
+                    <div className="w-full max-w-lg rounded-xl bg-white dark:bg-main-800 p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+                        <h2 className="mb-4 text-xl font-semibold dark:text-main-100">
                             Edit Subscription
                         </h2>
                         <div className="space-y-3">
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Name
                                 </span>
                                 <input
@@ -219,12 +218,12 @@ export default function SubscriptionCard({
                                             name: e.target.value,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 />
                             </label>
 
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Cost
                                 </span>
                                 <input
@@ -236,12 +235,12 @@ export default function SubscriptionCard({
                                             cost: Number(e.target.value),
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 />
                             </label>
 
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Category
                                 </span>
                                 <select
@@ -258,7 +257,7 @@ export default function SubscriptionCard({
                                             categoryId: e.target.value || null,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 >
                                     <option value="">Uncategorized</option>
                                     {categories.map((item) => (
@@ -270,7 +269,7 @@ export default function SubscriptionCard({
                             </label>
 
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Frequency
                                 </span>
                                 <select
@@ -281,7 +280,7 @@ export default function SubscriptionCard({
                                             frequency: e.target.value,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 >
                                     <option value="Weekly">Weekly</option>
                                     <option value="BiWeekly">BiWeekly</option>
@@ -292,7 +291,7 @@ export default function SubscriptionCard({
                             </label>
 
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Description
                                 </span>
                                 {formState.description && (
@@ -310,7 +309,7 @@ export default function SubscriptionCard({
                                     }
                                     rows={3}
                                     placeholder="Optional description..."
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2 resize-none"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2 resize-none"
                                 />
                             </label>
                         </div>

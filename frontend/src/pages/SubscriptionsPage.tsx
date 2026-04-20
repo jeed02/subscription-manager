@@ -90,7 +90,7 @@ export default function SubscriptionsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search subscriptions..."
-                className="mb-4 w-full rounded-lg border border-main-300 px-4 py-2 text-sm text-main-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-main-400"
+                className="mb-4 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-950 dark:text-main-100 px-4 py-2 text-sm text-main-700 placeholder:text-gray-400 dark:placeholder:text-main-500 focus:outline-none focus:ring-2 focus:ring-main-400"
             />
             {error && (
                 <div className="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700">
@@ -104,14 +104,14 @@ export default function SubscriptionsPage() {
                     </h1>
                     <button
                         onClick={openAddModal}
-                        className="rounded-lg border border-main-300 px-4 py-2 text-sm text-main-700 hover:bg-main-100"
+                        className="rounded-lg border border-main-300 dark:border-main-600 px-4 py-2 text-sm text-main-700 dark:text-main-200 hover:bg-main-100 dark:hover:bg-main-700"
                     >
                         + Add Subscription
                     </button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     {loading && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-main-400">
                             Loading subscriptions...
                         </p>
                     )}
@@ -161,13 +161,13 @@ export default function SubscriptionsPage() {
 
             {isAddOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
-                        <h2 className="mb-4 text-xl font-semibold">
+                    <div className="w-full max-w-lg rounded-xl bg-white dark:bg-main-800 p-6 shadow-xl">
+                        <h2 className="mb-4 text-xl font-semibold dark:text-main-100">
                             Add Subscription
                         </h2>
                         <div className="space-y-3">
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Name
                                 </span>
                                 <input
@@ -179,11 +179,11 @@ export default function SubscriptionsPage() {
                                             name: e.target.value,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 />
                             </label>
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Cost
                                 </span>
                                 <input
@@ -197,11 +197,11 @@ export default function SubscriptionsPage() {
                                             ),
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 />
                             </label>
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Category
                                 </span>
                                 <select
@@ -212,7 +212,7 @@ export default function SubscriptionsPage() {
                                             categoryId: e.target.value,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 >
                                     <option value="">Uncategorized</option>
                                     {categories.map((category) => (
@@ -226,7 +226,7 @@ export default function SubscriptionsPage() {
                                 </select>
                             </label>
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Frequency
                                 </span>
                                 <select
@@ -237,7 +237,7 @@ export default function SubscriptionsPage() {
                                             frequency: e.target.value,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 >
                                     <option value="Weekly">Weekly</option>
                                     <option value="BiWeekly">BiWeekly</option>
@@ -247,7 +247,7 @@ export default function SubscriptionsPage() {
                                 </select>
                             </label>
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Start Date
                                 </span>
                                 <input
@@ -259,11 +259,11 @@ export default function SubscriptionsPage() {
                                             startDate: e.target.value,
                                         }))
                                     }
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2"
                                 />
                             </label>
                             <label className="block">
-                                <span className="text-sm font-medium text-main-700">
+                                <span className="text-sm font-medium text-main-700 dark:text-main-300">
                                     Description
                                 </span>
                                 <textarea
@@ -276,14 +276,14 @@ export default function SubscriptionsPage() {
                                     }
                                     rows={3}
                                     placeholder="Optional description..."
-                                    className="mt-1 w-full rounded-lg border border-main-300 px-3 py-2 resize-none"
+                                    className="mt-1 w-full rounded-lg border border-main-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 px-3 py-2 resize-none"
                                 />
                             </label>
                         </div>
                         <div className="mt-5 flex justify-end gap-2">
                             <button
                                 onClick={closeAddModal}
-                                className="rounded-lg border border-main-300 px-4 py-2 text-main-700"
+                                className="rounded-lg border border-main-300 dark:border-main-600 px-4 py-2 text-main-700 dark:text-main-200"
                             >
                                 Cancel
                             </button>

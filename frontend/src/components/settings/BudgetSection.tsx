@@ -118,7 +118,7 @@ export default function BudgetSection() {
 
     if (loading) {
         return (
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white dark:bg-main-950 rounded-lg shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">Budgets</h2>
                 <div className="text-center py-4">Loading...</div>
             </div>
@@ -126,12 +126,12 @@ export default function BudgetSection() {
     }
 
     return (
-        <div className="bg-white rounded-lg border border-main-400 shadow p-6">
+        <div className="bg-white dark:bg-main-950 rounded-lg border border-main-400 shadow p-6">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Budgets</h2>
                 <button
                     onClick={() => setShowCreateForm(true)}
-                    className="px-4 py-2 rounded-md border border-main-300 text-main-700 hover:bg-main-100"
+                    className="px-4 py-2 rounded-md border border-main-300 text-main-400 hover:bg-main-100"
                 >
                     Add Budget
                 </button>
@@ -147,7 +147,7 @@ export default function BudgetSection() {
             {showCreateForm && (
                 <form
                     onSubmit={handleCreate}
-                    className="mb-6 p-4 bg-gray-50 rounded-lg"
+                    className="mb-6 p-4 bg-gray-50 dark:bg-main-950 dark:border dark:border-main-600 rounded-lg"
                 >
                     <h3 className="font-medium mb-3">Create New Budget</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -159,7 +159,7 @@ export default function BudgetSection() {
                                     categoryId: e.target.value || null,
                                 })
                             }
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             <option value="">Overall Budget</option>
                             {categories.map((category) => (
@@ -176,10 +176,10 @@ export default function BudgetSection() {
                                 setCreateForm({
                                     ...createForm,
                                     monthlyLimit:
-                                        parseFloat(e.target.value) || 0,
+                                        Number(e.target.valueAsNumber) || 0,
                                 })
                             }
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             min="0"
                             step="0.01"
                             required
@@ -192,10 +192,10 @@ export default function BudgetSection() {
                                 setCreateForm({
                                     ...createForm,
                                     alertThreshold:
-                                        parseFloat(e.target.value) || 80,
+                                        Number(e.target.valueAsNumber) || 80,
                                 })
                             }
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             min="0"
                             max="100"
                             required
@@ -211,7 +211,7 @@ export default function BudgetSection() {
                         <button
                             type="button"
                             onClick={() => setShowCreateForm(false)}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                            className="px-4 py-2 bg-gray-300 dark:bg-main-700 text-gray-700 dark:text-main-200 rounded-md hover:bg-gray-400 dark:hover:bg-main-600"
                         >
                             Cancel
                         </button>
@@ -222,7 +222,7 @@ export default function BudgetSection() {
             {/* Budgets List */}
             <div className="space-y-4">
                 {budgets.length === 0 ? (
-                    <p className="text-gray-500 text-center py-4">
+                    <p className="text-gray-500 dark:text-main-400 text-center py-4">
                         No budgets set yet. Create your first budget!
                     </p>
                 ) : (
@@ -238,7 +238,7 @@ export default function BudgetSection() {
                         return (
                             <div
                                 key={budget.id}
-                                className="p-4 border border-gray-200 rounded-lg"
+                                className="p-4 border border-gray-200 dark:border-main-700 rounded-lg"
                             >
                                 {editingId === budget.id ? (
                                     <form
@@ -258,7 +258,7 @@ export default function BudgetSection() {
                                                             null,
                                                     })
                                                 }
-                                                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             >
                                                 <option value="">
                                                     Overall Budget
@@ -279,12 +279,13 @@ export default function BudgetSection() {
                                                     setEditForm({
                                                         ...editForm,
                                                         monthlyLimit:
-                                                            parseFloat(
-                                                                e.target.value,
+                                                            Number(
+                                                                e.target
+                                                                    .valueAsNumber,
                                                             ) || 0,
                                                     })
                                                 }
-                                                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 min="0"
                                                 step="0.01"
                                                 required
@@ -296,12 +297,13 @@ export default function BudgetSection() {
                                                     setEditForm({
                                                         ...editForm,
                                                         alertThreshold:
-                                                            parseFloat(
-                                                                e.target.value,
+                                                            Number(
+                                                                e.target
+                                                                    .valueAsNumber,
                                                             ) || 80,
                                                     })
                                                 }
-                                                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 min="0"
                                                 max="100"
                                                 required
@@ -319,7 +321,7 @@ export default function BudgetSection() {
                                                 onClick={() =>
                                                     setEditingId(null)
                                                 }
-                                                className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm"
+                                                className="px-3 py-1 bg-gray-300 dark:bg-main-700 text-gray-700 dark:text-main-200 rounded hover:bg-gray-400 dark:hover:bg-main-600 text-sm"
                                             >
                                                 Cancel
                                             </button>
@@ -334,7 +336,7 @@ export default function BudgetSection() {
                                                         ? `Budget for ${budget.category?.name || "Category"}`
                                                         : "Overall Budget"}
                                                 </h3>
-                                                <p className="text-sm text-gray-600">
+                                                <p className="text-sm text-gray-600 dark:text-main-300">
                                                     Limit: $
                                                     {budget.monthlyLimit.toFixed(
                                                         2,
@@ -385,7 +387,7 @@ export default function BudgetSection() {
                                                         % of budget
                                                     </span>
                                                 </div>
-                                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                                <div className="w-full bg-gray-200 dark:bg-main-700 rounded-full h-2">
                                                     <div
                                                         className={`h-2 rounded-full ${isOverLimit ? "bg-red-500" : status.isOverThreshold ? "bg-yellow-500" : "bg-green-500"}`}
                                                         style={{

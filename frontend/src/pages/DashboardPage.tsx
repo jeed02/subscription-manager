@@ -6,6 +6,7 @@ import SubscriptionCategoryWidget from "../components/dashboard/widgets/Subscrip
 import TotalExpenseWidget from "../components/dashboard/widgets/TotalExpenseWidget.tsx";
 import UpcomingTransactionsWidget from "../components/dashboard/widgets/UpcomingTransactionsWidget.tsx";
 import DashboardLayout from "../components/layout/DashboardLayout.tsx";
+import { useCategories } from "../hooks/useCategories";
 import { useCategoryBreakdown } from "../hooks/useCategoryBreakdown.ts";
 import { useMonthlyExpenses } from "../hooks/useMonthlyExpenses";
 import { useSubscriptions } from "../hooks/useSubscriptions";
@@ -13,7 +14,14 @@ import { useTransactions } from "../hooks/useTransactions";
 import { toSubscriptionCardModel } from "../utils/subscriptionMapper";
 
 export default function DashboardPage() {
-    const { subscriptions, loading, error } = useSubscriptions();
+    const {
+        subscriptions,
+        loading,
+        error,
+        mutating,
+        editSubscription,
+        removeSubscription,
+    } = useSubscriptions();
     const {
         latestTransactions,
         upcomingTransactions,
@@ -30,6 +38,7 @@ export default function DashboardPage() {
         loading: monthlyExpensesLoading,
         error: monthlyExpensesError,
     } = useMonthlyExpenses();
+    const { categories } = useCategories();
     const renewSubscriptions = useMemo(
         () =>
             subscriptions
@@ -54,7 +63,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {loading && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-main-400">
                             Loading subscriptions...
                         </p>
                     )}
@@ -66,7 +75,7 @@ export default function DashboardPage() {
                     )}
 
                     {!loading && !error && renewSubscriptions.length === 0 && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-main-400">
                             No subscriptions yet.
                         </p>
                     )}
@@ -82,6 +91,26 @@ export default function DashboardPage() {
                                 logo={subscription.logo}
                                 frequency={subscription.frequencyLabel}
                                 category={subscription.categoryLabel}
+                                categoryId={subscription.categoryId}
+                                frequencyValue={subscription.frequencyValue}
+                                startDate={subscription.startDate}
+                                description={subscription.description}
+                                categories={categories}
+                                onSave={async (payload) => {
+                                    await editSubscription(subscription.id, {
+                                        name: payload.name,
+                                        cost: payload.cost,
+                                        startDate: payload.startDate,
+                                        frequency: payload.frequency,
+                                        categoryId: payload.categoryId,
+                                        description: payload.description,
+                                    });
+                                }}
+                                isSaving={mutating}
+                                isDeleting={mutating}
+                                onDelete={async () => {
+                                    await removeSubscription(subscription.id);
+                                }}
                             />
                         ))}
                 </div>
