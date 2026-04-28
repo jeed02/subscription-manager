@@ -15,4 +15,5 @@ public class AppDbContext : DbContext
     public DbSet<UserPreferences> UserPreferences => Set<UserPreferences>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Budget> Budgets => Set<Budget>();
+    public DbSet<DismissedNotification> DismissedNotifications => Set<DismissedNotification>();
 }

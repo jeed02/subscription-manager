@@ -1,17 +1,21 @@
-import { Navigate } from "react-router-dom"
-import { useAuth } from "../services/AuthContext.tsx"
-import type {JSX} from "react";
+import type { JSX } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../services/AuthContext.tsx";
 
 export default function ProtectedRoute({
-                                           children,
-                                       }: {
-    children: JSX.Element
+    children,
+}: {
+    children: JSX.Element;
 }) {
-    const { token } = useAuth()
+    const { token, isInitialized } = useAuth();
 
-    if (!token) {
-        return <Navigate to="/" />
+    if (!isInitialized) {
+        return null;
     }
 
-    return children
+    if (!token) {
+        return <Navigate to="/" />;
+    }
+
+    return children;
 }

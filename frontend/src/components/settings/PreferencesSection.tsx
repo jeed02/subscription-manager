@@ -79,7 +79,7 @@ export default function PreferencesSection() {
                                 currency: e.target.value,
                             })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-800 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-950 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         {CURRENCIES.map((currency) => (
                             <option key={currency.value} value={currency.value}>

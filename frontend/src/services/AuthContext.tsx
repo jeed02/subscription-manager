@@ -4,6 +4,7 @@ import { getPreferences, getProfile } from "./authService";
 
 interface ExtendedAuthContextType extends AuthContextType {
     preferences: UserPreferences | null;
+    isInitialized: boolean;
     refreshUser: () => Promise<void>;
     refreshPreferences: () => Promise<void>;
 }
@@ -18,14 +19,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [preferences, setPreferences] = useState<UserPreferences | null>(
         null,
     );
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
 
         if (storedToken) {
             setToken(storedToken);
-            refreshUser();
-            refreshPreferences();
+            Promise.all([refreshUser(), refreshPreferences()]).finally(() => {
+                setIsInitialized(true);
+            });
+        } else {
+            setIsInitialized(true);
         }
     }, []);
 
@@ -77,6 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 user,
                 token,
                 preferences,
+                isInitialized,
                 login,
                 logout,
                 refreshUser,

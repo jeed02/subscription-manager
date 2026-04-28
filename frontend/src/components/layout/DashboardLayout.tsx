@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoMenu } from "react-icons/io5";
+import NotificationBell from "./NotificationBell";
 import Sidebar from "./Sidebar";
 
 export default function DashboardLayout({
@@ -24,6 +25,9 @@ export default function DashboardLayout({
             />
 
             <main className="flex-1 min-h-screen lg:py-8 lg:px-24 p-8">
+                <div className="flex justify-end mb-4">
+                    <NotificationBell />
+                </div>
                 {children}
             </main>
         </div>

@@ -126,7 +126,7 @@ export default function CategoryManagementSection() {
             {showCreateForm && (
                 <form
                     onSubmit={handleCreate}
-                    className="mb-6 p-4 bg-gray-50 dark:bg-main-700 rounded-lg"
+                    className="mb-6 p-4 bg-gray-50 dark:bg-main-950 dark:border-main-600 dark:border rounded-lg"
                 >
                     <h3 className="font-medium mb-3">Create New Category</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -140,7 +140,7 @@ export default function CategoryManagementSection() {
                                     name: e.target.value,
                                 })
                             }
-                            className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-700 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-3 py-2 border border-gray-300 dark:border-main-600 dark:bg-main-950 dark:text-main-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                         <input
