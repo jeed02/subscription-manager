@@ -43,12 +43,12 @@ const HomePage = () => {
     return (
         <div className="relative flex items-center justify-center h-screen overflow-hidden bg-white">
             {/* Top-left image */}
-            <div ref={img1Ref} className="absolute top-64 left-64">
+            <div ref={img1Ref} className="absolute top-76 left-64">
                 <Magnetic>
                     <img
                         src={subManager3}
                         alt=""
-                        className="w-128 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
+                        className="w-84 lg:w-140 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
                     />
                 </Magnetic>
             </div>
@@ -59,18 +59,18 @@ const HomePage = () => {
                     <img
                         src={subManager1}
                         alt=""
-                        className="w-164 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
+                        className="w-124 lg:w-164 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
                     />
                 </Magnetic>
             </div>
 
             {/* Top-right image */}
-            <div ref={img3Ref} className="absolute top-24 right-100">
+            <div ref={img3Ref} className="absolute top-24 right-120">
                 <Magnetic>
                     <img
                         src={subManager1}
                         alt=""
-                        className="w-72 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
+                        className="w-48 lg:w-84 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
                     />
                 </Magnetic>
             </div>
