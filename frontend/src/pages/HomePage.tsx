@@ -1,3 +1,5 @@
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import subManager1 from "../assets/subManager1.png";
 import subManager3 from "../assets/subManager3.png";
@@ -5,36 +7,75 @@ import subManager3 from "../assets/subManager3.png";
 import Magnetic from "../components/homepage/Magnetic";
 
 const HomePage = () => {
+    const centerRef = useRef<HTMLDivElement>(null);
+    const img1Ref = useRef<HTMLDivElement>(null);
+    const img2Ref = useRef<HTMLDivElement>(null);
+    const img3Ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.set(centerRef.current, { y: 60, opacity: 0 });
+            gsap.set([img1Ref.current, img2Ref.current, img3Ref.current], {
+                scale: 0,
+                opacity: 0,
+            });
+
+            gsap.to(centerRef.current, {
+                y: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: "power3.out",
+            });
+
+            gsap.to([img1Ref.current, img2Ref.current, img3Ref.current], {
+                scale: 1,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out",
+                delay: 1,
+                stagger: 0.15,
+            });
+        });
+
+        return () => ctx.revert();
+    }, []);
+
     return (
         <div className="relative flex items-center justify-center h-screen overflow-hidden bg-white">
             {/* Top-left image */}
-            <Magnetic>
-                <img
-                    src={subManager3}
-                    alt=""
-                    className="absolute top-64 left-64 w-128 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
-                />
-            </Magnetic>
+            <div ref={img1Ref} className="absolute top-64 left-64">
+                <Magnetic>
+                    <img
+                        src={subManager3}
+                        alt=""
+                        className="w-128 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
+                    />
+                </Magnetic>
+            </div>
 
             {/* Bottom-right image */}
-            <Magnetic>
-                <img
-                    src={subManager1}
-                    alt=""
-                    className="absolute bottom-10 right-20 w-164 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
-                />
-            </Magnetic>
+            <div ref={img2Ref} className="absolute bottom-10 right-20">
+                <Magnetic>
+                    <img
+                        src={subManager1}
+                        alt=""
+                        className="w-164 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
+                    />
+                </Magnetic>
+            </div>
 
             {/* Top-right image */}
-            <Magnetic>
-                <img
-                    src={subManager1}
-                    alt=""
-                    className="absolute top-24 right-100 w-72 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
-                />
-            </Magnetic>
+            <div ref={img3Ref} className="absolute top-24 right-100">
+                <Magnetic>
+                    <img
+                        src={subManager1}
+                        alt=""
+                        className="w-72 h-auto rounded-2xl blur-2xs pointer-events-auto border border-main-300 border-1"
+                    />
+                </Magnetic>
+            </div>
 
-            <div className="flex flex-col items-center">
+            <div ref={centerRef} className="flex flex-col items-center">
                 <h1 className="relative z-10 text-8xl font-bold text-center leading-none select-none font-bell">
                     SubManager
                 </h1>
