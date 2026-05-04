@@ -26,7 +26,7 @@ export default function Sidebar({
         >
             <div className="flex flex-col h-screen bg-main-10 dark:bg-main-950 m-4 rounded border border-gray-200 dark:border-main-700 rounded-4xl drop-shadow-xs">
                 {/* Logo */}
-                <div className="p-6 text-xl font-bold text-center">
+                <div className="p-6 text-2xl font-bold text-center font-bell">
                     SubManager
                 </div>
 

@@ -4,7 +4,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+    font-family: "bell";
+    src: url("./assets/fonts/bell-t-medium.otf");
+}
+
 @theme {
+    --font-bell: "bell", sans-serif;
     --color-main-10: #ffffff;
     --color-main-20: #fefefe;
     --color-main-50: #daf9db;
@@ -18,6 +24,7 @@
     --color-main-800: #234024;
     --color-main-900: #112211;
     --color-main-950: #1e1e1e;
+    --blur-2xs: 2px;
 }
 
 :root {

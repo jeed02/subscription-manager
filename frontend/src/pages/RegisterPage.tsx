@@ -54,7 +54,7 @@ export default function LoginPage() {
 
                 <p className="mt-4 text-sm text-center dark:text-main-300">
                     Already have an account?{" "}
-                    <Link to="/" className="text-main-400">
+                    <Link to="/login" className="text-main-400">
                         Sign in
                     </Link>
                 </p>
